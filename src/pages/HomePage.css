@@ -1,0 +1,16 @@
+/* HomePage.css */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.home-content {
+    flex: 1;
+    padding: 0px;
+    margin-top: 60px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
