@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/login.css";
 import baseUrl from "../config/config"
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,6 +16,7 @@ function LoginPage() {
       const response = await axios.post(`${baseUrl}/api/user/login`, { phone, password });
       // 处理成功响应，例如跳转到首页或显示成功消息
       console.log(response.data);
+      navigate('/'); // 跳转到首页
       // 如果有token之类的，可以存储到localStorage或cookie中
       if(response.data.code === 200) {
         sessionStorage.setItem('token', response.data.data.token);
