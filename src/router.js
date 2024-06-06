@@ -15,6 +15,10 @@ import OrderDetailPage from "./pages/OrderDetailPage";
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    Component: LoginPage,
+  },
+  {
     path: "/",
     Component: App,
     children: [
@@ -38,10 +42,10 @@ const router = createBrowserRouter([
         path: "/my",
         Component: MyPage,
       },
-      {
-        path: "/login",
-        Component: LoginPage,
-      },
+      // {
+      //   path: "/login",
+      //   Component: LoginPage,
+      // },
       {
         path: "/home",
         Component: HomePage,
