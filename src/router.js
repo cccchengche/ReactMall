@@ -12,11 +12,16 @@ import CreateOrderPage from "./pages/CreateOrderPage";
 import PayPage from './pages/PayPage';
 import OrderListPage from "./pages/OrderListPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
+import SignUpPage from "./pages/SignupPage";
 
 const router = createBrowserRouter([
   {
     path: "/login",
     Component: LoginPage,
+  },
+  {
+    path: "/signup",
+    Component: SignUpPage,
   },
   {
     path: "/",

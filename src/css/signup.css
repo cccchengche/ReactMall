@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a {
+    text-decoration: none;
+}
+.container {
+    display: flex;
+    height: 100vh;
+}
+.box {
+    transition: width 0.3s ease; /* 平滑过渡宽度变化 */
+}
+.box-left {
+    width: 66vw;
+    background: url('../assets/login_bg.png') no-repeat;
+    background-color: #F4F5FB;
+    background-position: center; /* 背景图片居中 */
+    background-size: 33vw;
+}
+.box-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* 右盒子的背景颜色 */
+    /* width: 100%; 右盒子的宽度 */
+}
+@media (min-width: 1050px) {
+    .box-left {
+        width: 66%;
+    }
+    .box-right {
+        width: 34%;
+    }
+}
+
+@media (min-width: 750px) and (max-width: 1049px) {
+    .box-left {
+        width: 55%;
+    }
+    .box-right {
+        width: 45%;
+    }
+}
+
+@media (max-width: 749px) {
+    .box-left {
+        display: none;
+    }
+    .box-right {
+        width: 100%;
+    }
+}
+input[type="text"], input[type="password"] {
+    width: 300px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 10px;
+    font-family: '微软雅黑';
+    background-color: #F5F5F9;
+}
+input:focus {
+    border-color: #007bff; /* 蓝色边框 */
+    outline: none; /* 移除默认的轮廓样式 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
+}
+input:not(:placeholder-shown) {
+    background-color: #FFFFFF; /* 输入内容时变为白色 */
+}
+button {
+    display: block;
+    width: 300px;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5789FF;
+    font-size: 10px;
+    color: white;
+}
+button:hover{
+    background-color: #477CFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
+}
+.in {
+    font-size: 12px;
+    color: #596A80;
+    margin-bottom: 0;
+    margin-top: 10px;
+    height: 14px;
+}
+.line2 {
+    font-size: 12px;
+    color: #6C7A8E;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.line1 {
+    font-size: 30px;
+    color: #596A80;
+    margin-bottom: 20px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+.signup {
+    font-size: 12px;
+    color: #6C7A8E;
+    margin-top: 20px;
+    text-align: center;
+}
+/* .email-verification {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    font-size: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.email-input {
+    border: none;
+    padding: 10px;
+    flex-grow: 1;
+    font-size: 12px;
+    background-color: #F5F5F9;
+}
+
+.verify-text {
+    color: #477CFF;
+    padding: 10px 15px;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+}
+
+.verify-text:hover {
+    color: #1c56df;
+    text-shadow: 0px 0px 0px #888;
+} */
+.email-verification {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    width: 300px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.email-input {
+    padding: 10px;
+    margin-right: 4%;
+    width: 64%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: '微软雅黑';
+    background-color: #F5F5F9;
+}
+
+.send-button {
+    padding: 10px;
+    font-size: 10px;
+    width: 32%;
+    border: none;
+    border-radius: 4px;
+    background-color: #5789FF;
+    color: white;
+}
+
+.send-button:hover {
+    background-color: #477CFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+}
