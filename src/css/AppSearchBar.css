@@ -1,0 +1,19 @@
+.responsive-button {
+    width: 100px;
+    /* 默认宽度 */
+    transition: width 0.3s ease;
+}
+
+/* 当屏幕宽度小于600px时，按钮宽度变为80px */
+@media (max-width: 600px) {
+    .responsive-button {
+        width: 80px;
+    }
+}
+
+/* 当屏幕宽度小于400px时，按钮宽度变为60px */
+@media (max-width: 400px) {
+    .responsive-button {
+        width: 60px;
+    }
+}

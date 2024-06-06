@@ -1,6 +1,7 @@
 import React from 'react';
 import { Photograph } from '@nutui/icons-react';
 import { SearchBar, ConfigProvider, Toast, Button } from '@nutui/nutui-react';
+import '../../css/AppSearchBar.css';
 
 const AppSearchBar = () => {
   const marginStyle = { marginLeft: 8 };
@@ -27,7 +28,7 @@ const AppSearchBar = () => {
             </div>
           }
             right={
-            <Button type="primary" style={marginStyle}>搜索</Button>
+            <Button type="primary" style={marginStyle} className="responsive-button">搜索</Button>
             }
           onSearch={(value) => Toast.show(value)}
         />
