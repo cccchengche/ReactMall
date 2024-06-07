@@ -5,12 +5,13 @@ import { ArrowRight, Close } from '@nutui/icons-react';
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('未登录');
   const [balance, setBalance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showBalancePopup, setShowBalancePopup] = useState(false);
   const [animationKey, setAnimationKey] = useState(0); // 用于重新渲染动画组件的键值
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const handleRecharge = () => {
     Toast.show('充值功能暂未实现');
   };
@@ -27,6 +28,7 @@ const MyPage = () => {
         const matchBalance = token.match(/balance=([^,)]+)/);
         if (matchUsername) {
           setUsername(matchUsername[1]);
+          setIsAuthenticated(true);
         } else {
           console.error('Username not found in token');
         }
@@ -45,7 +47,25 @@ const MyPage = () => {
   const handleLogout = () => {
     Toast.show('已登出');
     sessionStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setUsername('未登录');
     navigate('/login'); // 登出后跳转到登录页面
+  };
+
+  const handleLogin = () => {
+    navigate('/login'); // 跳转到登录页面
+  };
+
+  const handleCellClick = (path, isBalance) => {
+    if (isAuthenticated) {
+      if (isBalance) {
+        setShowBalancePopup(true);
+      } else {
+        navigate(path);
+      }
+    } else {
+      navigate('/login');
+    }
   };
 
   // 当 showBalancePopup 变为 true 时，更新 animationKey 以重新渲染动画组件
@@ -71,30 +91,30 @@ const MyPage = () => {
                 title="全部订单"
                 align="center"
                 extra={<ArrowRight />}
-                onClick={() => {
-                  navigate('/orders');
-                }}
+                onClick={() => handleCellClick('/orders', false)}
               />
               <Cell
                 title="地址管理"
                 align="center"
                 extra={<ArrowRight />}
-                onClick={() => {
-                  navigate('/address-management');
-                }}
+                onClick={() => handleCellClick('/address-management', false)}
               />
               <Cell
                 title="我的余额"
                 align="center"
                 extra={<ArrowRight />}
-                onClick={() => {
-                  setShowBalancePopup(true);
-                }}
+                onClick={() => handleCellClick(null, true)}
               />
             </CellGroup>
-            <Button type="danger" block onClick={handleLogout} style={{ marginTop: '16px' }}>
-              退出登录
-            </Button>
+            {isAuthenticated ? (
+              <Button type="danger" block onClick={handleLogout} style={{ marginTop: '16px' }}>
+                退出登录
+              </Button>
+            ) : (
+              <Button type="primary" block onClick={handleLogin} style={{ marginTop: '16px' }}>
+                登录
+              </Button>
+            )}
             <Popup
               closeable
               visible={showBalancePopup}

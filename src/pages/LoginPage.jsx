@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/login.css";
 import baseUrl from "../config/config"
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useLocation } from 'react-router-dom';
 
 function LoginPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,9 @@ function LoginPage() {
       // 如果有token之类的，可以存储到localStorage或cookie中
       if(response.data.code === 200) {
         sessionStorage.setItem('token', response.data.data.token);
-        navigate('/'); // 跳转到首页
+        // navigate('/'); // 跳转到首页
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true }); // 跳转到登录前的页面或首页
       } else {
         setErrorMessage('登录失败，请检查您的手机号和密码');
       }
