@@ -1,91 +1,79 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col } from '@nutui/nutui-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Row, Col, PullToRefresh, Toast } from '@nutui/nutui-react';
 import AppSearchBar from '../components/home/AppSearchBar.jsx';
 import AppSwiper from '../components/home/AppSwiper.jsx';
 import AppHomeCard from '../components/home/AppHomeCard.jsx';
+import baseUrl from '../config/config';
 import '../css/HomePage.css';
 
 const HomePage = () => {
+  const [products, setProducts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const storedProducts = sessionStorage.getItem('products');
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+    } else {
+      fetchProducts();
+    }
+  }, []);
+
+  const fetchProducts = () => {
+    axios.get(`${baseUrl}/api/item/get50`)
+      .then(response => {
+        if (response.data.code === 200 && Array.isArray(response.data.data)) {
+          setProducts(response.data.data);  // 使用响应中的数据更新状态
+          sessionStorage.setItem('products', JSON.stringify(response.data.data));  // 将数据存储到sessionStorage
+        } else {
+          setErrorMessage('获取商品信息失败');
+        }
+      })
+      .catch(error => {
+        setErrorMessage('无法获取商品信息，请稍后再试');
+        console.error('Error fetching products:', error);
+      });
+  };
+
+  const handleRefresh = () => {
+    return new Promise((resolve) => {
+      fetchProducts();
+      resolve('done');
+    });
+  };
+
   return (
     <div className="home-container">
       <AppSearchBar />
       <Row className="home-content" type='flex' justify="center">
         <Col span={24}>
-          <AppSwiper />
-          {/* 设置gutter为24px水平和垂直间距，调整justify属性来居中卡片 */}
-          <Row gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题1"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t24781/87/2629118248/224593/d80976cc/5bea3864N9f957799.jpg!q70.jpg.webp"
-                description="描述信息1"
-                link="/detail/1"
-              />
-            </Col>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题2"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/9127/19/11092/257269/5c25b570E0506a53a/318404957ae1e636.jpg!q70.jpg.webp"
-                description="描述信息2"
-                link="/detail/2"
-              />
-            </Col>
-          </Row>
-          <Row gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题1"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/25076/32/2804/339477/5c20eff6E59cbabc2/f8dbaca519e3f3b1.jpg!q70.jpg.webp"
-                description="描述信息1"
-                link="/detail/1"
-              />
-            </Col>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题2"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/22734/21/2036/130399/5c18af2aEab296c01/7b148f18c6081654.jpg!q70.jpg.webp"
-                description="描述信息2"
-                link="/detail/2"
-              />
-            </Col>
-          </Row>
-          <Row gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题1"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t6934/364/1195375010/84676/e9f2c55f/597ece38N0ddcbc77.jpg!q70.jpg.webp"
-                description="描述信息1"
-                link="/detail/1"
-              />
-            </Col>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题2"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/5372/5/15919/391423/5bdfeff4Eb8f15189/d39cba927ffb0f69.jpg!q70.jpg.webp"
-                description="描述信息2"
-                link="/detail/2"
-              />
-            </Col>
-          </Row>
-          <Row gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题1"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/1156/8/14017/123589/5bd9a4e8E7dbd4a15/70fbbccdf8811111.jpg!q70.jpg.webp"
-                description="描述信息1"
-                link="/detail/1"
-              />
-            </Col>
-            <Col span={12}>
-              <AppHomeCard
-                title="商品标题2"
-                imageUrl="https://m.360buyimg.com/mobilecms/s720x720_jfs/t26632/42/1652775992/112721/6d069142/5be8122cN4fe1172e.jpg!q70.jpg.webp"
-                description="描述信息2"
-                link="/detail/2"
-              />
-            </Col>
-          </Row>
+          <PullToRefresh onRefresh={handleRefresh}>
+            <AppSwiper />
+            {/* 动态加载的商品卡片 */}
+            {products.reduce((rows, product, index) => {
+              if (index % 2 === 0) {
+                rows.push([product]);
+              } else {
+                rows[rows.length - 1].push(product);
+              }
+              return rows;
+            }, []).map((pair, idx) => (
+              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
+                {pair.map(product => (
+                  <Col key={product.id} span={12}>
+                    <AppHomeCard
+                      title={product.name}
+                      imageUrl={product.image}
+                      description={`价格: ${product.price / 100}元`}
+                      link={`/detail/${product.id}`}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            ))}
+            {errorMessage && <p className="error">{errorMessage}</p>}
+          </PullToRefresh>
         </Col>
       </Row>
     </div>
