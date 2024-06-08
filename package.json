@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nutui/icons-react-taro": "^1.0.4",
     "@nutui/nutui-react": "^2.6.8",
     "@vitejs/plugin-react": "^4.3.0",
     "antd": "^5.18.0",

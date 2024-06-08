@@ -1,0 +1,147 @@
+.detail-page {
+    background-color: #f5f5f5;
+    padding: 10px;
+    position: relative;
+    min-height: 100vh; /* 让页面高度至少占满一屏 */
+    padding-top: 10px; /* 确保内容不会被导航栏遮挡 */
+  }
+  .navbar {
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fff; /* 确保导航栏背景色 */
+  }
+  
+  .page-container {
+    position: relative;
+
+  }
+  
+  .good-info {
+    background-color: white;
+    padding: 15px;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .good-info h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .price {
+    display: flex;
+    align-items: center;
+  }
+  
+  .current-price {
+    font-size: 24px;
+    color: #ff4d4f;
+    margin-right: 10px;
+  }
+  
+  .good-description {
+    margin: 10px 0;
+  }
+  
+  .good-stock {
+    color: #999;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+  }
+  
+  .good-details {
+    margin-bottom: 10px;
+  }
+  
+  .popup-content {
+    padding: 20px;
+  }
+  
+  .good-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .good-price {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .tag-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sold-count {
+    margin-left: auto; /*已售 右对齐 */
+    color: #999;
+  }
+  
+  .action-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 52px;
+    background-color: #fff; 
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); 
+  }
+
+  .collapse{
+    margin-left: -15px;
+    background-color: #f5f5f500;
+  }
+  
+  .product-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto; /* 将表格水平居中 */
+}
+
+  .product-info-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .product-info-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .product-info-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .product-info-table td:first-child {
+    font-weight: bold;
+  }
+
+  .comment-section {
+    margin-top: 20px;
+  }
+  
+  .no-comment {
+    text-align: center;
+    padding: 20px 0;
+    color: #999;
+  }
+  
+  .comment-list {
+    margin-top: 10px;
+  }
+  
+  /* 如果需要，可以根据具体的样式要求进行进一步的调整 */
+  
+  
