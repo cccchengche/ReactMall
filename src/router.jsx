@@ -25,38 +25,10 @@ const router = createBrowserRouter([
     Component: SignUpPage,
   },
   {
-    path: "/",
-    Component: App,
-    children: [
-      {
-        path: "/",
-        Component: HomePage,
-      },
-      {
-        path: "/cart",
-        Component: CartPage,
-      },
-      {
-        path: "/category",
-        Component: CategoryPage,
-      },
-      {
-        path: "/find",
-        Component: FindPage,
-      },
-      {
-        path: "/my",
-        Component: MyPage,
-      },
-      {
-        path: "/home",
-        Component: HomePage,
-      },
-      {
-        path: "/detail/:goodId",
-        Component: DetailPage,
-      },
-      {
+  path: "/detail/:goodId",
+  Component: DetailPage,
+  },
+  {
         path: "/createOrder/:goodId",
         Component: () => (
           <RequireAuth>
@@ -87,6 +59,34 @@ const router = createBrowserRouter([
             <OrderDetailPage />
           </RequireAuth>
         ),
+      },
+  {
+    path: "/",
+    Component: App,
+    children: [
+      {
+        path: "/",
+        Component: HomePage,
+      },
+      {
+        path: "/cart",
+        Component: CartPage,
+      },
+      {
+        path: "/category",
+        Component: CategoryPage,
+      },
+      {
+        path: "/find",
+        Component: FindPage,
+      },
+      {
+        path: "/my",
+        Component: MyPage,
+      },
+      {
+        path: "/home",
+        Component: HomePage,
       },
     ]
   }
