@@ -31,10 +31,12 @@ const AppTabbar = () => {
   };
 
   return (
+    //所有导航栏均置顶图层
     <Tabbar
       value={activeIndex}
       onSwitch={handleTabChange}
       fixed
+      style={{ zIndex: 1000 }}
     >
       <Tabbar.Item title="首页" icon={<Home width={20} height={20} />} />
       <Tabbar.Item title="分类" icon={<Category width={20} height={20} />} />

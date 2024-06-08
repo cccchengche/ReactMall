@@ -2,9 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 import { Popup, Button, Form, InputNumber, Toast, Loading, Tag, Price, Collapse, NavBar } from '@nutui/nutui-react';
-import { ArrowLeft, Share, Received, Comment,CartAdd,FollowAdd,Cart } from '@nutui/icons-react'; // 导入图标
+import { ArrowLeft, Share, Received, Comment, Cart } from '@nutui/icons-react'; // 导入图标
 import baseUrl from '../config/config';
 import '../css/DetailPage.css'; // 引入自定义的CSS文件
+
+const parseTokenString = (tokenString) => {
+  const tokenArray = tokenString
+    .slice(5, -1) // 去掉前面的 "User(" 和后面的 ")"
+    .split(", ") // 按逗号和空格分割
+    .map(pair => pair.split("=")); // 按等号分割每一对
+
+  const tokenObject = {};
+  tokenArray.forEach(([key, value]) => {
+    tokenObject[key] = value;
+  });
+
+  return tokenObject;
+};
 
 const DetailPage = () => {
   const { goodId } = useParams();
@@ -42,8 +56,49 @@ const DetailPage = () => {
     setShowPopup(true);
   }
 
-  const handleConfirm = (values) => {
-    Toast.show({ content: `已添加 ${values.quantity} 件商品到购物车`, icon: 'success' });
+  const handleConfirm = async (values) => {
+    const tokenString = sessionStorage.getItem('token');
+    let tokenObject = null;
+
+    if (tokenString) {
+      try {
+        tokenObject = parseTokenString(tokenString);
+      } catch (e) {
+        console.error('Failed to parse token from sessionStorage', e);
+        Toast.fail('请先登录');
+        navigate('/login');
+        return;
+      }
+    }
+
+    const userId = tokenObject && tokenObject.id;
+
+    if (!userId) {
+      Toast.fail('请先登录');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${baseUrl}/api/cart/create`,
+        {
+          user_id: userId,
+          item_id: goodId,
+          num: values.quantity,
+        }
+      );
+
+      if (response.data.code === 200) {
+        Toast.show({ content: `已添加 ${values.quantity} 件商品到购物车`, icon: 'success' });
+      } else {
+        Toast.fail('添加到购物车失败');
+      }
+    } catch (error) {
+      Toast.fail('添加到购物车失败，请稍后再试');
+      console.error('Error adding to cart:', error);
+    }
+
     setShowPopup(false);
   }
 
@@ -56,11 +111,11 @@ const DetailPage = () => {
   }
 
   const priceInYuan = good.price / 100;
-  var info = good.spec;
-  var 尺寸 = info["尺寸"];
-  const color = good.spec['颜色'];
-  const chima = good.spec['尺码'];
-  const version = good.spec['版本'];
+  const info = good.spec;
+  const color = info["颜色"];
+  const size = info["尺寸"];
+  const version = info["版本"];
+  const chima = info["尺码"];
 
   return (
     <div className="page-container">
@@ -97,7 +152,7 @@ const DetailPage = () => {
           <h5>{good.name}</h5>
           <div className='collapse'>
           <Collapse>
-            <Collapse.Item title={<span style={{ display: 'flex', alignItems: 'center', marginLeft: '-10px' , color: '#002'}}><Received style={{ marginRight: '6px' }} />产品信息 | 分类 | 品牌 | 规格</span>}>
+            <Collapse.Item title={<span style={{ display: 'flex', alignItems: 'center', marginLeft: '-10px', color: '#002' }}><Received style={{ marginRight: '6px' }} />产品信息 | 分类 | 品牌 | 规格</span>}>
               <table className="product-info-table">
                 <tbody>
                   <tr>
@@ -110,7 +165,7 @@ const DetailPage = () => {
                   </tr>
                   <tr>
                     <td>尺寸:</td>
-                    <td>{尺寸}</td>
+                    <td>{size}</td>
                   </tr>
                   <tr>
                     <td>颜色：</td>
@@ -133,15 +188,12 @@ const DetailPage = () => {
             <Comment style={{ marginRight: '5px', color: "#fa2c19" }} />
             共 {good.comment_count} 条评价
           </h6>
-
         </div>
 
-      
-
         <div className="action-buttons">
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: 400}}>
-            <Button type="primary" onClick={onBuyClick} style={{ flex: 1, marginRight: '8px' ,height :'40px'}}><Comment style={{ marginRight: '5px'}} />购买</Button>
-            <Button type="default" onClick={onAddToCartClick} style={{ flex: 1  ,height :'40px'}}><Cart style={{ marginRight: '5px', size: '90'}} />添加到购物车</Button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: 400 }}>
+            <Button type="primary" onClick={onBuyClick} style={{ flex: 1, marginRight: '8px', height: '40px' }}><Comment style={{ marginRight: '5px' }} />购买</Button>
+            <Button type="default" onClick={onAddToCartClick} style={{ flex: 1, height: '40px' }}><Cart style={{ marginRight: '5px', size: '90' }} />添加到购物车</Button>
           </div>
         </div>
 
