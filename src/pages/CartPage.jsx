@@ -130,7 +130,10 @@ const CartPage = () => {
                 <InputNumber
                   defaultValue={item.num}
                   min={1}
-                  onChange={(value) => handleQuantityChange(item.id, value)}
+                  onChange={(value, e) => {
+                    e.stopPropagation(); // 阻止事件传播
+                    handleQuantityChange(item.id, value);
+                    }}
                 />
               }
               />}

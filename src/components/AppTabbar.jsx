@@ -38,11 +38,11 @@ const AppTabbar = () => {
       fixed
       style={{ zIndex: 1000 }}
     >
-      <Tabbar.Item title="首页" icon={<Home width={20} height={20} />} />
-      <Tabbar.Item title="分类" icon={<Category width={20} height={20} />} />
-      <Tabbar.Item title="发现" icon={<Find width={20} height={20} />} />
-      <Tabbar.Item title="购物车" icon={<Cart width={20} height={20} />} />
-      <Tabbar.Item title="我的" icon={<User width={20} height={20} />} />
+      <Tabbar.Item title="首页" icon={<Home width={20} height={20} color='red' />} />
+      <Tabbar.Item title="分类" icon={<Category width={20} height={20} color='red'/>} />
+      <Tabbar.Item title="发现" icon={<Find width={20} height={20} color='red'/>} />
+      <Tabbar.Item title="购物车" icon={<Cart width={20} height={20} color='red'/>} />
+      <Tabbar.Item title="我的" icon={<User width={20} height={20} color='red'/>} />
     </Tabbar>
   );
 };

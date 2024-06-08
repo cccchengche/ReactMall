@@ -78,7 +78,7 @@ const HomePage = () => {
               }
               return rows;
             }, []).map((pair, idx) => (
-              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
+              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0px' }}>
                 {pair.map(product => (
                   <Col key={product.id} span={12}>
                     <AppHomeCard
