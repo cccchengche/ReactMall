@@ -1,0 +1,32 @@
+.categoryItem {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.categoryItem:hover {
+  background-color: #f0f0f0;
+}
+
+.categoryItem.active {
+  background-color: #0000ff;
+  color: #e0e0e0;
+}
+
+.header {
+  height: 20%;
+  padding: 20px 5px 10px;
+  display: flex;
+}
+
+.header span {
+  flex: 4;
+  font-size: 20px;
+  text-align: center;
+}
+
+.icon {
+  flex: 1;
+  cursor: pointer;
+  size: 40px;
+}
