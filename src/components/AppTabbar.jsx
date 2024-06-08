@@ -31,6 +31,7 @@ const AppTabbar = () => {
   };
 
   return (
+    //所有导航栏均置顶图层
     <Tabbar
       value={activeIndex}
       onSwitch={handleTabChange}
