@@ -18,9 +18,7 @@ const CategoryDetailPage = () => {
     const decodedName = decodeURIComponent(name);
     axios.post(`${baseUrl}/api/item`, { category: decodedName })
       .then(response => {
-        console.log(response);
         if (response.data.code === 200 && Array.isArray(response.data.data)) {
-          console.log(response.data.data);
           setProducts(response.data.data);
         } else {
           throw new Error('Failed to fetch products');
@@ -48,6 +46,7 @@ const CategoryDetailPage = () => {
         {products.map((product) => {
           const stock = `库存：${product.stock}`;
           const brand = `品牌：${product.brand}`;
+          const price = (product.price / 100);
 
           return (
             <Card
@@ -55,7 +54,7 @@ const CategoryDetailPage = () => {
               src={product.image}
               style={{ marginTop: '20px' }}
               title={product.name}
-              price={product.price}
+              price={price}
               shopName={stock}
               tag={<div>{brand}</div>}
             >
