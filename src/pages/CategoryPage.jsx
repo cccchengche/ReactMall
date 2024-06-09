@@ -47,9 +47,9 @@ const CategoryPage = () => {
       <div className="header">
         <ArrowLeft className='icon' width="20px" height="20px" onClick={() => navigate(-1)} />
         <span>分类</span>
-        <Search className='icon' width="20px" height="20px" onClick={() => console.log('搜索')} />
+        <Search className='icon' width="20px" height="20px" onClick={() => navigate('/search')} />
       </div>
-      <div style={{ display: 'flex',marginTop:'15%'  }}>
+      <div style={{ display: 'flex', marginTop: '15%' }}>
         <div style={{ width: '30%' }}>
           <CellGroup>
             {categories.map(category => (

@@ -40,7 +40,7 @@ const CategoryDetailPage = () => {
       <div className="header">
         <ArrowLeft className='icon' width="20px" height="20px" onClick={() => navigate(-1)} />
         <span>{name}</span>
-        <Search className='icon' width="20px" height="20px" onClick={() => console.log('搜索')} />
+        <Search className='icon' width="20px" height="20px" onClick={() => navigate('/search')} />
       </div>
       <div style={{ marginTop: '70px' }}>
         {products.map((product) => {
