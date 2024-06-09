@@ -1,37 +1,52 @@
-import React, { useContext } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import React from 'react';
+import { useLocation } from 'react-router';
+import { NavBar, Cell, Button, Toast } from '@nutui/nutui-react';
+import { ArrowLeft } from '@nutui/icons-react';
 
-import { ServiceContext } from '../contexts/ServiceContext';
+const CreateOrder = () => {
+  const location = useLocation();
+  const { selectedItems } = location.state || { selectedItems: [] };
 
-
-const CreateOrderPage = () => {
-  const { goodId } = useParams();
-  const services = useContext(ServiceContext);
-  const navigate = useNavigate();
-
-  const onSubmitClick = () => {
-    // 1. 创建订单，拿到orderid
-    const parsedGoodId = parseInt(goodId, 10);
-    const good = services.good.getGoodById(parsedGoodId);
-    if (!good) {
-      //TBD 跳转主页
-      alert('商品不存在');
-      navigate('/home');
-      return;
+  React.useEffect(() => {
+    console.log('Selected Items:', selectedItems);
+    if (selectedItems.length === 0) {
+      Toast.show('没有选择任何商品');
+      // navigator.back();
     }
-    const order = services.order.createOrder(1, parsedGoodId, good.price)
-    // 2. 跳转到支付页面
-    alert('下单成功，请支付！');
-    navigate(`/pay/${order.id}`);
-    
-  }
+  }, [selectedItems]);
 
-  return <>
-    <h1>CreateOrder Page</h1>
-    <p> goodId: {goodId}</p>
-    <p>你是否要购买？？？？？？</p>
-    <button onClick={onSubmitClick}>购买</button>
-  </>
-}
+  const handleSubmitOrder = () => {
+    Toast.show('订单创建成功');
+  };
 
-export default CreateOrderPage;
+  return (
+    <div className="create-order-page">
+      <NavBar
+        back={<ArrowLeft onClick={() => window.history.back()} />}
+        onBackClick={() => window.history.back()}
+      >
+        创建订单
+      </NavBar>
+
+      <Cell title="目的地址" description="北京市朝阳区某某路某某号" />
+
+      {selectedItems.length > 0 ? (
+        selectedItems.map((item, index) => (
+          <Cell key={index} title={`商品ID: ${item}`} />
+        ))
+      ) : (
+        <Cell title="没有选择任何商品" />
+      )}
+
+      <Cell title="订单合计" description="￥0.00" />
+
+      <div style={{ padding: '16px' }}>
+        <Button type="primary" block onClick={handleSubmitOrder}>
+          提交订单
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default CreateOrder;
