@@ -42,7 +42,7 @@ const CategoryDetailPage = () => {
         <span>{name}</span>
         <Search className='icon' width="20px" height="20px" onClick={() => console.log('搜索')} />
       </div>
-      <div>
+      <div style={{ marginTop: '70px' }}>
         {products.map((product) => {
           const stock = `库存：${product.stock}`;
           const brand = `品牌：${product.brand}`;
