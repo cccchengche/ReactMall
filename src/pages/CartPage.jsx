@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber } from '@nutui/nutui-react';
-import { Share, Cart, ArrowLeft, More } from '@nutui/icons-react';
+import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber, Swipe } from '@nutui/nutui-react';
+import { Share, Cart, ArrowLeft, More, Del } from '@nutui/icons-react';
 import baseUrl from '../config/config';
 
 const parseTokenString = (tokenString) => {
   const tokenArray = tokenString
-    .slice(5, -1) // 去掉前面的 "User(" 和后面的 ")"
-    .split(", ") // 按逗号和空格分割
-    .map(pair => pair.split("=")); // 按等号分割每一对
+    .slice(5, -1)
+    .split(", ")
+    .map(pair => pair.split("="));
 
   const tokenObject = {};
   tokenArray.forEach(([key, value]) => {
@@ -18,6 +18,25 @@ const parseTokenString = (tokenString) => {
 
   return tokenObject;
 };
+
+const divNode = (text, style, onClick) => {
+  return (
+    <div
+      style={{
+        width: '60px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...style,
+      }}
+      onClick={onClick}
+    >
+      <Del style={{ marginBottom: '8px' }}/>
+      <>{text}</>
+    </div>
+  )
+}
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -36,7 +55,6 @@ const CartPage = () => {
     let tokenObject;
     try {
       tokenObject = parseTokenString(tokenString);
-      // console.log("Parsed tokenObject:", tokenObject);
     } catch (e) {
       console.error("Failed to parse token from sessionStorage", e);
       setLoading(false);
@@ -66,7 +84,7 @@ const CartPage = () => {
     axios.post(`${baseUrl}/api/cart/update`, { id, num: value })
       .then(response => {
         if (response.data.code === 200) {
-          // Toast.show('数量更新成功');
+          Toast.show('数量更新成功');
         } else {
           Toast.show('更新数量失败');
         }
@@ -77,26 +95,30 @@ const CartPage = () => {
       });
   };
 
+  const handleDelete = (id) => {
+    axios.get(`${baseUrl}/api/cart/delete`, { params: { id } })
+      .then(response => {
+        if (response.data.code === 200) {
+          setCartItems(cartItems.filter(item => item.id !== id));
+          Toast.show('删除成功');
+        } else {
+          Toast.show('删除失败');
+        }
+      })
+      .catch(error => {
+        Toast.show('删除失败');
+        console.error('Error deleting cart item:', error);
+      });
+  };
+
   const handleCardClick = (id) => {
     navigate(`/detail/${id}`);
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (errorMessage) {
-    return (
-      <div className="cart-page">
-        <Empty description={errorMessage} />
-      </div>
-    );
-  }
-
   return (
     <div className="cart-page">
       <NavBar
-        back={<ArrowLeft onClick={() => navigate(-1)} />}
+        back={<ArrowLeft onClick={() => navigate(0)} />}
         right={
           <>
             <span onClick={() => Toast.show('编辑')}>编辑</span>
@@ -115,29 +137,71 @@ const CartPage = () => {
         </i>
       </NavBar>
 
-      {cartItems.length === 0 ? (
+      {loading ? (
+        <Loading />
+      ) : errorMessage ? (
+        <div>
+          <Empty description={errorMessage} />
+        </div>
+      ) : cartItems.length === 0 ? (
         <Empty description="您的购物车为空" />
       ) : (
         <Cell.Group>
           {cartItems.map(item => (
-            <Cell key={item.id} onClick={() => handleCardClick(item.item_id)} title={<Card
-              src={item.image}
-              title={item.name}
-              shopDescription="规格"
-              delivery={item.spec}
-              price={(item.price / 100).toFixed(2)}
-              extra={
-                <InputNumber
-                  defaultValue={item.num}
-                  min={1}
-                  onChange={(value, e) => {
-                    e.stopPropagation(); // 阻止事件传播
-                    handleQuantityChange(item.id, value);
-                    }}
-                />
+            <Swipe
+              key={item.id}
+              style={{ height: '104px' }}
+              rightAction={
+                <div
+                  style={{
+                    height: 'inherit',
+                    width: '240px',
+                    display: 'flex',
+                    fontSize: '12px',
+                  }}
+                >
+                  <>
+                    {divNode('设置常买', {
+                      background: '#F8F8F8',
+                      color: '#1A1A1A',
+                    })}
+                    {divNode('移入收藏', {
+                      background: '#ffcc00',
+                      color: '#FFF',
+                    })}
+                    {divNode('看相似', {
+                      background: '#FF860D',
+                      color: '#FFF',
+                    })}
+                    {divNode('删除', {
+                      background: '#FA2C19',
+                      color: '#FFF',
+                    }, () => handleDelete(item.id))}
+                  </>
+                </div>
               }
-              />}
-            />
+            >
+              <Cell
+                onClick={() => handleCardClick(item.item_id)}
+                title={<Card
+                  src={item.image}
+                  title={item.name}
+                  shopDescription="规格"
+                  delivery={item.spec}
+                  price={(item.price / 100).toFixed(2)}
+                  extra={
+                    <InputNumber
+                      defaultValue={item.num}
+                      min={1}
+                      onChange={(value, e) => {
+                        e.stopPropagation();
+                        handleQuantityChange(item.id, value);
+                      }}
+                    />
+                  }
+                />}
+              />
+            </Swipe>
           ))}
         </Cell.Group>
       )}

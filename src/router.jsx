@@ -26,6 +26,42 @@ const router = createBrowserRouter([
     Component: SignUpPage,
   },
   {
+    path: "/detail/:goodId",
+    Component: DetailPage,
+  },
+  {
+    path: "/createOrder/:goodId",
+    Component: () => (
+      <RequireAuth>
+        <CreateOrderPage />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/pay/:orderId",
+    Component: () => (
+      <RequireAuth>
+        <PayPage />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/orderList",
+    Component: () => (
+      <RequireAuth>
+        <OrderListPage />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/orderDetail/:orderId",
+    Component: () => (
+      <RequireAuth>
+        <OrderDetailPage />
+      </RequireAuth>
+    ),
+  },
+  {
     path: "/",
     Component: App,
     children: [
@@ -57,42 +93,7 @@ const router = createBrowserRouter([
         path: "/home",
         Component: HomePage,
       },
-      {
-        path: "/detail/:goodId",
-        Component: DetailPage,
-      },
-      {
-        path: "/createOrder/:goodId",
-        Component: () => (
-          <RequireAuth>
-            <CreateOrderPage />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "/pay/:orderId",
-        Component: () => (
-          <RequireAuth>
-            <PayPage />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "/orderList",
-        Component: () => (
-          <RequireAuth>
-            <OrderListPage />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "/orderDetail/:orderId",
-        Component: () => (
-          <RequireAuth>
-            <OrderDetailPage />
-          </RequireAuth>
-        ),
-      },]
+      ]
   }
 ]);
 
