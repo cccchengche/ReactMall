@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 导入 useNavigate
 import axios from 'axios';
 import { Card, Input, Button, Dialog, SearchBar, Toast } from '@nutui/nutui-react';
-import { Photograph } from '@nutui/icons-react';
+import { Photograph, ArrowLeft } from '@nutui/icons-react'; // 导入 ArrowLeft 图标
 import baseUrl from '../config/config';
 import '../css/SearchPage.css';
 
 const SearchPage = () => {
+  const navigate = useNavigate(); // 使用 useNavigate 钩子
   const [name, setName] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
@@ -53,6 +55,7 @@ const SearchPage = () => {
   return (
     <div className="search-page">
       <div className="search-bar-container">
+        <ArrowLeft className="back-icon" onClick={() => navigate(-1)} />
         <SearchBar
           value={name}
           placeholder="请输入商品名称"

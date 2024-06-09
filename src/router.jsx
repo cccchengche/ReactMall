@@ -63,6 +63,10 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/search",
+    Component: SearchPage
+  },
+  {
     path: "/",
     Component: App,
     children: [
@@ -93,10 +97,6 @@ const router = createBrowserRouter([
       {
         path: "/home",
         Component: HomePage,
-      },
-      {
-        path: "/search",
-        Component: SearchPage
       },
       ]
   }
