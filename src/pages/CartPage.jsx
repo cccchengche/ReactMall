@@ -163,83 +163,95 @@ const CartPage = () => {
       ) : cartItems.length === 0 ? (
         <Empty description="您的购物车为空" />
       ) : (
-        <>
-          <Cell.Group>
-            {cartItems.map(item => (
-              <Swipe
-                key={item.id}
-                style={{ height: '104px' }}
-                rightAction={
-                  <div
-                    style={{
-                      height: 'inherit',
-                      width: '240px',
-                      display: 'flex',
-                      fontSize: '12px',
-                    }}
-                  >
-                    <>
-                      {divNode('设置常买', {
-                        background: '#F8F8F8',
-                        color: '#1A1A1A',
-                      })}
-                      {divNode('移入收藏', {
-                        background: '#ffcc00',
-                        color: '#FFF',
-                      })}
-                      {divNode('看相似', {
-                        background: '#FF860D',
-                        color: '#FFF',
-                      })}
-                      {divNode('删除', {
-                        background: '#FA2C19',
-                        color: '#FFF',
-                      }, () => handleDelete(item.id))}
-                    </>
-                  </div>
-                }
-              >
-                <Cell>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    }}
-                  >
-                    <Checkbox
-                      checked={selectedItems.includes(item.id)}
-                      onChange={() => handleSelectItem(item.id)}
-                    />
-                    <Card
-                      src={item.image}
-                      title={item.name}
-                      shopDescription="规格"
-                      delivery={item.spec}
-                      price={(item.price / 100).toFixed(2)}
-                      onClick={() => handleCardClick(item.item_id)}
-                    />
-                    <InputNumber
-                      style={{ float: 'right' }}
-                      defaultValue={item.num}
-                      min={1}
-                      onChange={(value, e) => {
-                        e.stopPropagation();
-                        handleQuantityChange(item.id, value);
-                      }}
-                    />
-                  </div>
-                </Cell>
-              </Swipe>
-            ))}
-          </Cell.Group>
-          <div style={{ padding: '16px' }}>
-            <Button type="primary" block onClick={handleCheckout}>
-              结算
-            </Button>
-          </div>
-        </>
-      )}
+            <>
+              <Cell.Group>
+                {cartItems.map((item, index) => {
+                  const specs = JSON.parse(item.spec);
+                  const specText = Object.entries(specs).map(([key, value]) => `${value}`).join(', ');
+
+                  return (
+                    <Swipe
+                      key={item.id}
+                      style={{ height: '104px' }}
+                      rightAction={
+                        <div
+                          style={{
+                            height: 'inherit',
+                            width: '240px',
+                            display: 'flex',
+                            fontSize: '12px',
+                          }}
+                        >
+                          <>
+                            {divNode('设置常买', {
+                              background: '#F8F8F8',
+                              color: '#1A1A1A',
+                            })}
+                            {divNode('移入收藏', {
+                              background: '#ffcc00',
+                              color: '#FFF',
+                            })}
+                            {divNode('看相似', {
+                              background: '#FF860D',
+                              color: '#FFF',
+                            })}
+                            {divNode('删除', {
+                              background: '#FA2C19',
+                              color: '#FFF',
+                            }, () => handleDelete(item.id))}
+                          </>
+                        </div>
+                      }
+                    >
+                      <Cell>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                          }}
+                        >
+                          <Checkbox
+                            checked={selectedItems.includes(item.id)}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              handleSelectItem(item.id);
+                            }}
+                          />
+                          <Card
+                            src={item.image}
+                            title={item.name}
+                            description={
+                              <div style={{ fontSize: '14px', padding: '10px 0', color: '#999' }}>
+                                {specText}
+                              </div>
+                            }
+                            price={(item.price / 100).toFixed(2)}
+                            onClick={() => handleCardClick(item.item_id)}
+                          />
+                          <InputNumber
+                            style={{ float: 'right' }}
+                            defaultValue={item.num}
+                            min={1}
+                            onChange={(value, e) => {
+                              e.stopPropagation();
+                              handleQuantityChange(item.id, value);
+                            }}
+                          />
+                        </div>
+                      </Cell>
+                    </Swipe>
+                  );
+                })}
+
+              </Cell.Group>
+              <div style={{ padding: '16px' }}>
+                <Button type="primary" block onClick={handleCheckout}>
+                  结算
+                </Button>
+              </div>
+            </>
+          )}
     </div>
   );
 };
