@@ -16,9 +16,11 @@ const CategoryDetailPage = () => {
 
   useEffect(() => {
     const decodedName = decodeURIComponent(name);
-    axios.post(`${baseUrl}/api/item`, { name: decodedName })
+    axios.post(`${baseUrl}/api/item`, { category: decodedName })
       .then(response => {
+        console.log(response);
         if (response.data.code === 200 && Array.isArray(response.data.data)) {
+          console.log(response.data.data);
           setProducts(response.data.data);
         } else {
           throw new Error('Failed to fetch products');
