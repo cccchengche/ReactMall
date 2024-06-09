@@ -120,10 +120,10 @@ const DetailPage = () => {
   return (
     <div className="page-container">
       <div className='navbar'>
-        <NavBar 
+        <NavBar
           children="商品详情"
           leftShow
-          left={<ArrowLeft onClick={() => navigate('/home')} />} // 自定义左侧内容
+          left={<ArrowLeft onClick={() => navigate(-1)} />} // 自定义左侧内容
           right={<Share />} // 自定义右侧内容
           fixed
           style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#fff' }} // 确保固定在顶部
@@ -136,53 +136,53 @@ const DetailPage = () => {
 
           <div className="good-price">
             <div className="tag-container">
-              <Price 
-                price={priceInYuan} 
-                symbol="¥" 
-                digits={2} 
-                thousands={true} 
-                position="before" 
-                size="large" 
-                line={false} 
+              <Price
+                price={priceInYuan}
+                symbol="¥"
+                digits={2}
+                thousands={true}
+                position="before"
+                size="large"
+                line={false}
               />
               <Tag type="primary" round>优惠价</Tag>
             </div>
-            <span className="sold-count" style={{ fontSize: 15}}>已售: {good.sold}</span>
+            <span className="sold-count" style={{ fontSize: 15 }}>已售: {good.sold}</span>
           </div>
           <h5>{good.name}</h5>
           <div className='collapse'>
-          <Collapse>
-            <Collapse.Item title={<span style={{ display: 'flex', alignItems: 'center', marginLeft: '-10px', color: '#002' }}><Received style={{ marginRight: '6px' }} />产品信息 | 分类 | 品牌 | 规格</span>}>
-              <table className="product-info-table">
-                <tbody>
-                  <tr>
-                    <td>分类:</td>
-                    <td>{good.category}</td>
-                  </tr>
-                  <tr>
-                    <td>品牌:</td>
-                    <td>{good.brand}</td>
-                  </tr>
-                  <tr>
-                    <td>尺寸:</td>
-                    <td>{size}</td>
-                  </tr>
-                  <tr>
-                    <td>颜色：</td>
-                    <td>{color}</td>
-                  </tr>
-                  <tr>
-                    <td>尺码：</td>
-                    <td>{chima}</td>
-                  </tr>
-                  <tr>
-                    <td>版本：</td>
-                    <td>{version}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </Collapse.Item>
-          </Collapse>
+            <Collapse>
+              <Collapse.Item title={<span style={{ display: 'flex', alignItems: 'center', marginLeft: '-10px', color: '#002' }}><Received style={{ marginRight: '6px' }} />产品信息 | 分类 | 品牌 | 规格</span>}>
+                <table className="product-info-table">
+                  <tbody>
+                    <tr>
+                      <td>分类:</td>
+                      <td>{good.category}</td>
+                    </tr>
+                    <tr>
+                      <td>品牌:</td>
+                      <td>{good.brand}</td>
+                    </tr>
+                    <tr>
+                      <td>尺寸:</td>
+                      <td>{size}</td>
+                    </tr>
+                    <tr>
+                      <td>颜色：</td>
+                      <td>{color}</td>
+                    </tr>
+                    <tr>
+                      <td>尺码：</td>
+                      <td>{chima}</td>
+                    </tr>
+                    <tr>
+                      <td>版本：</td>
+                      <td>{version}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Collapse.Item>
+            </Collapse>
           </div>
           <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '38%' }}>
             <Comment style={{ marginRight: '5px', color: "#fa2c19" }} />

@@ -57,6 +57,7 @@ const CategoryDetailPage = () => {
               price={price}
               shopName={stock}
               tag={<div>{brand}</div>}
+              onClick={() => navigate(`/detail/${product.id}`)}
             >
             </Card>
           );
