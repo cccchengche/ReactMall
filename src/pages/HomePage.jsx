@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Row, Col, PullToRefresh, Toast } from '@nutui/nutui-react';
+import { Row, Col, PullToRefresh, Toast, Price, Badge, Grid,Image  } from '@nutui/nutui-react'; // 导入相关组件
+import { IconFont,Home } from '@nutui/icons-react'; // 导入图标
 import AppSearchBar from '../components/home/AppSearchBar.jsx';
 import AppSwiper from '../components/home/AppSwiper.jsx';
 import AppHomeCard from '../components/home/AppHomeCard.jsx';
@@ -50,7 +51,25 @@ const HomePage = () => {
         <Col span={24}>
           <PullToRefresh onRefresh={handleRefresh}>
             <AppSwiper />
-            {/* 动态加载的商品卡片 */}
+            {/* 添加 Grid ,此处与商品分类链接！！！ comment by ZLT */}
+            <Grid columns={5}>
+              <Grid.Item text="数码">
+              <Image src={'src/assets/delicacy.jpg'} width="100%" height="100%" />
+              </Grid.Item>
+              <Grid.Item text="家电">
+              <Image src={'src/assets/household.jpg'} width="100%" height="100%" />
+              </Grid.Item>
+              <Grid.Item text="服装">
+              <Image src={'src/assets/clothing.jpg'} width="100%" height="100%" />
+              </Grid.Item>
+              <Grid.Item text="食品">
+              <Image src={'src/assets/delicacy.jpg'} width="100%" height="100%" />
+              </Grid.Item>
+              <Grid.Item text="百货">
+              <Image src={'src/assets/department.jpg'} width="100%" height="100%" />
+              </Grid.Item>
+            </Grid>
+            {/* 加载商品卡片 */}
             {products.reduce((rows, product, index) => {
               if (index % 2 === 0) {
                 rows.push([product]);
@@ -59,13 +78,24 @@ const HomePage = () => {
               }
               return rows;
             }, []).map((pair, idx) => (
-              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
+              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0px' }}>
                 {pair.map(product => (
                   <Col key={product.id} span={12}>
                     <AppHomeCard
                       title={product.name}
                       imageUrl={product.image}
-                      description={`价格: ${product.price / 100}元`}
+                      // 使用 Price
+                      description={
+                        <>
+                          <Price price={product.price / 100} size="large" />
+                          <span style={{ marginLeft: '8px' }}>销量: {product.sold}+</span>
+                          <div style={{ marginLeft: '8px', display: 'flex', alignItems: 'center' }}>
+                            <Badge color="red" value="包邮" style={{ marginRight: '2px', marginBottom:'12px' }} />
+                            <Badge color="orange" value="7天价保" style={{ marginLeft: '30px', marginBottom:'12px' }} />
+                            <Badge color="gold" value="先享后付" style={{ marginLeft: '48px', marginBottom:'12px' }} />
+                          </div>
+                        </>
+                      }
                       link={`/detail/${product.id}`}
                     />
                   </Col>

@@ -92,8 +92,7 @@ const router = createBrowserRouter([
             <OrderDetailPage />
           </RequireAuth>
         ),
-      },
-    ]
+      },]
   }
 ]);
 

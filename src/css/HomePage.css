@@ -1,6 +1,9 @@
 /* HomePage.css */
 
 .home-container {
+    background: linear-gradient(to bottom, #ff0000, #ffffff); /* 从红色渐变到白色 */
+    min-height: 85vh; /* 确保背景覆盖整个视口高度 */
+    padding: 5px; /* 可选：增加一些内边距 */
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -11,7 +14,15 @@
 .home-content {
     flex: 1;
     padding: 0px;
-    margin-top: 60px;
+    margin-top: 63px;
     overflow-y: auto;
     box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* 两个卡片之间的空间均匀分布 */
+}
+
+.grid-container {
+    border-radius: 20px; /* 设置圆角半径为10px */
+    /*overflow: hidden; /* 隐藏超出边界的内容，以确保圆角效果 */
 }
