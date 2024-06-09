@@ -49,7 +49,7 @@ const CategoryPage = () => {
         <span>分类</span>
         <Search className='icon' width="20px" height="20px" onClick={() => console.log('搜索')} />
       </div>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex',marginTop:'15%'  }}>
         <div style={{ width: '30%' }}>
           <CellGroup>
             {categories.map(category => (

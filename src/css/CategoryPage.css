@@ -14,9 +14,13 @@
 }
 
 .header {
-  height: 20%;
   padding: 20px 5px 10px;
   display: flex;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: white; /* 确保背景色一致 */
+  z-index: 1000; /* 确保header在其他内容上层 */
 }
 
 .header span {
