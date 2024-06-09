@@ -16,6 +16,8 @@ import OrderListPage from "./pages/OrderListPage.jsx";
 import OrderDetailPage from "./pages/OrderDetailPage.jsx";
 import SignUpPage from "./pages/SignupPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import AddressPage from "./pages/AddressPage.jsx";
+import AddAddressPage from "./pages/AddAddressPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/address-management',
+    Component: AddressPage
+  },
+  {
+    path: '/add-address',
+    Component: AddAddressPage
+  },
+  {
     path: "/",
     Component: App,
     children: [
@@ -98,7 +108,7 @@ const router = createBrowserRouter([
         path: "/search",
         Component: SearchPage
       },
-      ]
+    ]
   }
 ]);
 
