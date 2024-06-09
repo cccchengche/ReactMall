@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Card, Input, Button } from '@nutui/nutui-react';
+import { Card, Input, Button, Dialog, SearchBar, Toast } from '@nutui/nutui-react';
+import { Photograph } from '@nutui/icons-react';
 import baseUrl from '../config/config';
 import '../css/SearchPage.css';
 
@@ -12,12 +13,12 @@ const SearchPage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const handleSearch = () => {
     setLoading(true);
     setError(null);
 
-    // 将价格从字符串转换为整数
     const filters = {
       name,
       minPrice: minPrice ? parseInt(minPrice) : null,
@@ -41,42 +42,40 @@ const SearchPage = () => {
       });
   };
 
+  const openDialog = () => {
+    setDialogVisible(true);
+  };
+
+  const closeDialog = () => {
+    setDialogVisible(false);
+  };
+
   return (
     <div className="search-page">
-      <div className="search-bar">
-        <div className="input-group">
-          <label>商品名称</label>
-          <Input
-            value={name}
-            placeholder="请输入商品名称"
-            onChange={(e) => setName(e)}
-          />
-        </div>
-        <div className="input-group">
-          <label>价格</label>
-          <Input
-            value={minPrice}
-            placeholder="最低价格"
-            type="number"
-            onChange={(e) => setMinPrice(e)}
-          />
-          <span>-</span>
-          <Input
-            value={maxPrice}
-            placeholder="最高价格"
-            type="number"
-            onChange={(e) => setMaxPrice(e)}
-          />
-        </div>
-        <div className="input-group">
-          <label>品牌</label>
-          <Input
-            value={brand}
-            placeholder="请输入品牌"
-            onChange={(e) => setBrand(e)}
-          />
-        </div>
-        <Button type="primary" onClick={handleSearch}>搜索</Button>
+      <div className="search-bar-container">
+        <SearchBar
+          value={name}
+          placeholder="请输入商品名称"
+          onChange={(value) => setName(value)}
+          rightIn={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Photograph
+                width={16}
+                height={16}
+                onClick={() => {
+                  console.log('Photograph right in');
+                }}
+              />
+            </div>
+          }
+          right={
+            <>
+              <Button type="primary" className="responsive-button" onClick={handleSearch}>搜索</Button>
+              <Button type="default" className="responsive-button" onClick={openDialog}>更多</Button>
+            </>
+          }
+          onSearch={() => Toast.show(name)}
+        />
       </div>
       {loading && <p>加载中...</p>}
       {error && <p className="error">{error}</p>}
@@ -94,6 +93,39 @@ const SearchPage = () => {
           </Card>
         ))}
       </div>
+      <Dialog
+        visible={dialogVisible}
+        title="更多选项"
+        onClose={closeDialog}
+      >
+        <div className="input-group">
+          <label>最低价格</label>
+          <Input
+            value={minPrice}
+            placeholder="最低价格"
+            type="number"
+            onChange={(e) => setMinPrice(e)}
+          />
+        </div>
+        <div className="input-group">
+          <label>最高价格</label>
+          <Input
+            value={maxPrice}
+            placeholder="最高价格"
+            type="number"
+            onChange={(e) => setMaxPrice(e)}
+          />
+        </div>
+        <div className="input-group">
+          <label>品牌</label>
+          <Input
+            value={brand}
+            placeholder="请输入品牌"
+            onChange={(e) => setBrand(e)}
+          />
+        </div>
+        <Button type="primary" onClick={closeDialog}>确定</Button>
+      </Dialog>
     </div>
   );
 };
