@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { Toast } from "@nutui/nutui-react";
 
 const parseTokenString = (tokenString) => {
   const tokenArray = tokenString
@@ -34,7 +35,13 @@ const RequireAuth = ({ children }) => {
 
   const hasValidToken = tokenObject && tokenObject.id; // 根据实际需求调整验证条件
 
-  if (!hasValidToken) {
+  if (location.pathname === "/login" && hasValidToken) {
+    console.log("Valid token found, redirecting to home...");
+    Toast.show("您已经登录");
+    return <Navigate to="/" replace />;
+  }
+
+  if (!hasValidToken && location.pathname !== "/login") {
     console.log("No valid token found, redirecting to login...");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
