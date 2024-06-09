@@ -22,7 +22,13 @@ import AddAddressPage from "./pages/AddAddressPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/login",
-    Component: LoginPage,
+    // Component: LoginPage,
+    Component: () => (
+      <RequireAuth>
+        <LoginPage />
+      </RequireAuth>
+      
+    ),
   },
   {
     path: "/signup",
@@ -33,7 +39,7 @@ const router = createBrowserRouter([
     Component: DetailPage,
   },
   {
-    path: "/createOrder/:goodId",
+    path: "/createOrder",
     Component: () => (
       <RequireAuth>
         <CreateOrderPage />
