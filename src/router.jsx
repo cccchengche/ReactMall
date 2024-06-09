@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import CartPage from "./pages/CartPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
+import CategoryDetailPage from "./pages/CategoryDetailPage.jsx";
 import FindPage from "./pages/FindPage.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import DetailPage from "./pages/DetailPage.jsx";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/category",
         Component: CategoryPage,
+      },
+      {
+        path: "/categoryDetail/:name",
+        Component: CategoryDetailPage,
       },
       {
         path: "/find",

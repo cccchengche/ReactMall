@@ -20,13 +20,12 @@
 }
 
 .header span {
-  flex: 4;
-  font-size: 20px;
+  flex: 3;
+  font-size: 18px;
   text-align: center;
 }
 
 .icon {
   flex: 1;
   cursor: pointer;
-  size: 40px;
 }
