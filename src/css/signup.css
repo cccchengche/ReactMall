@@ -3,34 +3,44 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 a {
     text-decoration: none;
 }
+
 .container {
     display: flex;
     height: 100vh;
 }
+
 .box {
-    transition: width 0.3s ease; /* 平滑过渡宽度变化 */
+    transition: width 0.3s ease;
+    /* 平滑过渡宽度变化 */
 }
+
 .box-left {
     width: 66vw;
     background: url('../assets/login_bg.png') no-repeat;
     background-color: #F4F5FB;
-    background-position: center; /* 背景图片居中 */
+    background-position: center;
+    /* 背景图片居中 */
     background-size: 33vw;
 }
+
 .box-right {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white; /* 右盒子的背景颜色 */
+    background-color: white;
+    /* 右盒子的背景颜色 */
     /* width: 100%; 右盒子的宽度 */
 }
+
 @media (min-width: 1050px) {
     .box-left {
         width: 66%;
     }
+
     .box-right {
         width: 34%;
     }
@@ -40,6 +50,7 @@ a {
     .box-left {
         width: 55%;
     }
+
     .box-right {
         width: 45%;
     }
@@ -49,11 +60,14 @@ a {
     .box-left {
         display: none;
     }
+
     .box-right {
         width: 100%;
     }
 }
-input[type="text"], input[type="password"] {
+
+.container input[type="text"],
+.container input[type="password"] {
     width: 300px;
     padding: 10px;
     margin: 10px 0;
@@ -63,15 +77,22 @@ input[type="text"], input[type="password"] {
     font-family: '微软雅黑';
     background-color: #F5F5F9;
 }
-input:focus {
-    border-color: #007bff; /* 蓝色边框 */
-    outline: none; /* 移除默认的轮廓样式 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
+
+.container input:focus {
+    border-color: #007bff;
+    /* 蓝色边框 */
+    outline: none;
+    /* 移除默认的轮廓样式 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
 }
-input:not(:placeholder-shown) {
-    background-color: #FFFFFF; /* 输入内容时变为白色 */
+
+.container input:not(:placeholder-shown) {
+    background-color: #FFFFFF;
+    /* 输入内容时变为白色 */
 }
-button {
+
+.container button {
     display: block;
     width: 300px;
     padding: 10px;
@@ -83,10 +104,13 @@ button {
     font-size: 10px;
     color: white;
 }
-button:hover{
+
+.container button:hover {
     background-color: #477CFF;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* 水平偏移量 0，垂直偏移量 2px，模糊半径 4px，阴影颜色透明度 0.2 */
 }
+
 .in {
     font-size: 12px;
     color: #596A80;
@@ -94,24 +118,28 @@ button:hover{
     margin-top: 10px;
     height: 14px;
 }
+
 .line2 {
     font-size: 12px;
     color: #6C7A8E;
     margin-bottom: 20px;
     margin-top: 10px;
 }
+
 .line1 {
     font-size: 30px;
     color: #596A80;
     margin-bottom: 20px;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
 .signup {
     font-size: 12px;
     color: #6C7A8E;
     margin-top: 20px;
     text-align: center;
 }
+
 /* .email-verification {
     width: 300px;
     border: 1px solid #ccc;
