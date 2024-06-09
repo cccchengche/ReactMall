@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber, Swipe } from '@nutui/nutui-react';
+import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber, Swipe, Button } from '@nutui/nutui-react';
 import { Share, Cart, ArrowLeft, More, Del } from '@nutui/icons-react';
 import baseUrl from '../config/config';
 
@@ -183,24 +183,32 @@ const CartPage = () => {
             >
               <Cell
                 onClick={() => handleCardClick(item.item_id)}
-                title={<Card
-                  src={item.image}
-                  title={item.name}
-                  shopDescription="规格"
-                  delivery={item.spec}
-                  price={(item.price / 100).toFixed(2)}
-                  extra={
-                    <InputNumber
-                      defaultValue={item.num}
-                      min={1}
-                      onChange={(value, e) => {
-                        e.stopPropagation();
-                        handleQuantityChange(item.id, value);
-                      }}
-                    />
-                  }
-                />}
-              />
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                >
+                  <Card
+                    src={item.image}
+                    title={item.name}
+                    shopDescription="规格"
+                    delivery={item.spec}
+                    price={(item.price / 100).toFixed(2)}
+                  />
+                  <InputNumber
+                    style={{ float: 'right' }}
+                    defaultValue={item.num}
+                    min={1}
+                    onChange={(value, e) => {
+                      e.stopPropagation();
+                      handleQuantityChange(item.id, value);
+                    }}
+                  />
+                </div>
+              </Cell>
             </Swipe>
           ))}
         </Cell.Group>
@@ -210,3 +218,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
