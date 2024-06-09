@@ -15,6 +15,7 @@ import PayPage from './pages/PayPage.jsx';
 import OrderListPage from "./pages/OrderListPage.jsx";
 import OrderDetailPage from "./pages/OrderDetailPage.jsx";
 import SignUpPage from "./pages/SignupPage.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: "/home",
         Component: HomePage,
+      },
+      {
+        path: "/search",
+        Component: SearchPage
       },
       ]
   }
