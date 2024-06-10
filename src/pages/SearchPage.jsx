@@ -89,7 +89,7 @@ const SearchPage = () => {
             src={product.image}
             style={{ marginTop: '20px' }}
             title={product.name}
-            price={product.price}
+            price={product.price/100}
             shopName={`库存：${product.stock}`}
             tag={<div>{`品牌：${product.brand}`}</div>}
           >
