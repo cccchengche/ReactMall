@@ -20,14 +20,13 @@ const RequireAuth = ({ children }) => {
   const location = useLocation();
   const tokenString = sessionStorage.getItem("token");
 
-  console.log("tokenString:", tokenString);
-
   let tokenObject = null;
 
   if (tokenString) {
     try {
       tokenObject = parseTokenString(tokenString);
-      console.log("Parsed tokenObject:", tokenObject);
+      // 将 tokenObject 转换回字符串并存储在 sessionStorage
+      sessionStorage.setItem("tokenObject", JSON.stringify(tokenObject));
     } catch (e) {
       console.error("Failed to parse token from sessionStorage", e);
     }

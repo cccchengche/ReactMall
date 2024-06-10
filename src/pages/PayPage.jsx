@@ -47,6 +47,7 @@ const PayPage = () => {
         if (response.data.code === 200) {
           Toast.show('支付成功');
           localStorage.removeItem('cart_ids');
+          
           navigate('/payment-success');
         } else {
           Toast.show('支付失败');
@@ -60,6 +61,23 @@ const PayPage = () => {
           Toast.show('支付失败');
         }
         console.error('Error processing payment:', error.message);
+      });
+    
+    const storedTokenObject = JSON.parse(sessionStorage.getItem("tokenObject"));
+    const phone = storedTokenObject.phone;
+    const password = storedTokenObject.password;
+    
+    axios.post(`${baseUrl}/api/user/login`, { phone, password })
+      .then(response => {
+        // console.log('修改token',response.data);
+        if (response.data.code === 200) {
+          sessionStorage.setItem('token', response.data.data.token);
+        } else {
+          setErrorMessage('登录失败，请检查您的手机号和密码');
+        }
+      })
+      .catch(error => {
+        console.error(error);
       });
   };
 
