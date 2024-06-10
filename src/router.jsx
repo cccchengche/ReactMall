@@ -18,6 +18,7 @@ import SignUpPage from "./pages/SignupPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import AddressPage from "./pages/AddressPage.jsx";
 import AddAddressPage from "./pages/AddAddressPage.jsx";
+import PaymentSuccess from './pages/PaymentSuccess';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,14 @@ const router = createBrowserRouter([
     Component: () => (
       <RequireAuth>
         <PayPage />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/payment-success",
+    Component: () => (
+      <RequireAuth>
+        <PaymentSuccess />
       </RequireAuth>
     ),
   },
