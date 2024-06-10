@@ -20,7 +20,7 @@ a {
 
 .box-left {
     width: 66vw;
-    background: url('../assets/login_bg.png') no-repeat;
+    background: url('') no-repeat;
     background-color: #F4F5FB;
     background-position: center;
     /* 背景图片居中 */

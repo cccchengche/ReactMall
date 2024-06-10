@@ -72,7 +72,7 @@ function SignUpPage() {
         <div className="container">
             <div className="box box-left"></div>
             <div className="box box-right">
-                <div>
+                <div className='right-main'>
                     <p className="line1">Start here MALL! 🚀</p>
                     <p className="line2">请注册您的账户开始体验！</p>
                     <p className="in">昵称</p>

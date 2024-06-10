@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/login.css";
 import baseUrl from "../config/config"
-import { Link, useNavigate,useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import background from '../assets/OIP-C.jpg';
 
 function LoginPage() {
   const [phone, setPhone] = useState('');
@@ -35,9 +36,12 @@ function LoginPage() {
 
   return (
     <div className="container">
-      <div className="box box-left"></div>
+      <div className="box-left"></div>
       <div className="box box-right">
-        <div>
+        <div className='right-header'>
+          <img src={background} alt='logo' />
+        </div>
+        <div className='right-main'>
           <p className="line1">Welcome to MALL! 👋</p>
           <p className="line2">请登录您的账户开始体验！</p>
           <form onSubmit={handleSubmit}>
