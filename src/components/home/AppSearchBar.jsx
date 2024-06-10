@@ -8,7 +8,7 @@ import '../../css/AppSearchBar.css';
 const AppSearchBar = () => {
   const navigate = useNavigate();
   return (
-    <div className="search-bar-container" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, padding: '10px' }} onClick={() => navigate('/search')}>
+    <div className="search-bar-container" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, width:'600px',padding: '14px' }} onClick={() => navigate('/search')}>
       <ConfigProvider
         theme={{
           nutuiSearchbarBackground: 'rgba(247, 247, 247, 1)',
@@ -20,7 +20,7 @@ const AppSearchBar = () => {
           rightIn={
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Photograph
-                width={16}
+                width={25}
                 height={16}
                 onClick={() => {
                   console.log('Photograph right in');
@@ -32,6 +32,7 @@ const AppSearchBar = () => {
             <Button type="primary" className="responsive-button">搜索</Button>
           }
           onSearch={(value) => Toast.show(value)}
+          style={{ width: 'calc(100% + 30px)' }}
         />
       </ConfigProvider>
     </div>

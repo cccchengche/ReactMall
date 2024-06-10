@@ -1,14 +1,16 @@
 /* HomePage.css */
 
 .home-container {
+    margin-top: 2px;
     background: linear-gradient(to bottom, #ff0000, #ffffff); /* 从红色渐变到白色 */
     min-height: 85vh; /* 确保背景覆盖整个视口高度 */
-    padding: 5px; /* 可选：增加一些内边距 */
+    padding: 0px; /* 可选：增加一些内边距 */
     display: flex;
     flex-direction: column;
     height: 100vh;
     box-sizing: border-box;
     background-color: #f0f2f5;
+    justify-content: space-between;
 }
 
 .home-content {
@@ -22,7 +24,20 @@
     justify-content: space-between; /* 两个卡片之间的空间均匀分布 */
 }
 
+.home-content > .ant-col {
+    flex-basis: calc(50% - 12px); /* 计算每个卡片所占据的宽度，包括间距 */
+}
+
+
 .grid-container {
+    /* padding-bottom: 9px; */
     border-radius: 20px; /* 设置圆角半径为10px */
     /*overflow: hidden; /* 隐藏超出边界的内容，以确保圆角效果 */
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    margin-bottom: 100px;
 }

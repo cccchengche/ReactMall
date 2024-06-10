@@ -146,7 +146,7 @@ const CartPage = () => {
       setTotalPrice(0);
     } else {
       const allItemIds = cartItems.map(item => item.id);
-      const total = cartItems.reduce((sum, item) => sum + item.price * item.num, 0);
+      const total = cartItems.reduce((sum, item) => sum + item.price, 0);
       setSelectedItems(allItemIds);
       setTotalPrice(total);
     }

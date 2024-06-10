@@ -74,7 +74,7 @@ const SearchPage = () => {
           right={
             <>
               <Button type="primary" className="responsive-button" onClick={handleSearch}>搜索</Button>
-              <Button type="default" className="responsive-button" onClick={openDialog}>更多</Button>
+              <Button type="default" className="responsive-button" onClick={openDialog}>筛选</Button>
             </>
           }
           onSearch={() => Toast.show(name)}
