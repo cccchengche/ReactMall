@@ -19,6 +19,7 @@ import SearchPage from "./pages/SearchPage.jsx";
 import AddressPage from "./pages/AddressPage.jsx";
 import AddAddressPage from "./pages/AddAddressPage.jsx";
 import PaymentSuccess from './pages/PaymentSuccess';
+import OrdersPage from "./pages/OrdersPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
   {
     path: '/add-address',
     Component: AddAddressPage
+  },
+  {
+    path: '/orders',
+    Component: OrdersPage
   },
   {
     path: "/",

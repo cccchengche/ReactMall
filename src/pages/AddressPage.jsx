@@ -73,7 +73,8 @@ const AddressList = () => {
         }
       });
       if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
-        setAddresses(response.data.data);
+        const sortedAddresses = response.data.data.sort((a, b) => b.isDefault - a.isDefault);
+        setAddresses(sortedAddresses);
       } else {
         console.error('Unexpected response data:', response.data);
       }
@@ -102,6 +103,17 @@ const AddressList = () => {
     }
   };
 
+  const setDefault = async (userId, addressId) => {
+    try {
+      await axios.put('http://localhost:8081/api/address/setDefault', null, {
+        params: { userId, addressId }
+      });
+      fetchAddresses(userId); // Refresh the address list
+    } catch (error) {
+      console.error('Error setting default address', error);
+    }
+  };
+
   return (
     <div style={{ padding: '10px' }}>
       {addresses.map((address) => (
@@ -114,7 +126,10 @@ const AddressList = () => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              {address.isDefault === "1" ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> : <span style={{ color: 'red' }}>设为默认</span>}
+              {address.isDefault === "1" 
+                ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> 
+                : <button className='btn' style={{ color: 'red' }} onClick={() => setDefault(address.userId, address.id)}>设为默认</button>
+              }
             </div>
             <div>
               <button className='btn' style={{ marginRight: '10px', }} onClick={() => updateAddress(address)}>编辑</button>
