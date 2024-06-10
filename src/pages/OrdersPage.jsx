@@ -79,6 +79,10 @@ const OrderList = () => {
               <p>支付方式: {order.payment_type === 1 ? '微信' : order.payment_type === 2 ? '支付宝' : '其他'}</p>
               <p>订单状态: {order.status === 1 ? '未支付' : order.status === 2 ? '已支付' : '其他'}</p>
             </div>
+            <div>
+              <button className='order-btn'>查看详情</button>
+              {(order.status === 0 || order.status === 1 || order.status === 2) && <button className='order-btn'>取消订单</button>}
+            </div>
           </div>
         </div>
       ))}
