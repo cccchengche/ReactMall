@@ -214,7 +214,7 @@ const CartPage = () => {
                           <Checkbox
                             checked={selectedItems.includes(item.id)}
                             onChange={(e) => {
-                              e.stopPropagation();
+                              // e.stopPropagation();
                               handleSelectItem(item.id);
                             }}
                           />
