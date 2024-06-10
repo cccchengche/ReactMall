@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from '@nutui/icons-react';
 import axios from 'axios';
@@ -36,7 +36,7 @@ const Header = () => {
   );
 };
 
-const AddAddressPage = ({ userId }) => {
+const AddAddressPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     contact: '',
@@ -48,6 +48,21 @@ const AddAddressPage = ({ userId }) => {
     isDefault: false,
     note: '',
   });
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const match = token.match(/id=(\d+)/);
+      if (match) {
+        const userId = match[1];
+        setUserId(userId);
+        console.log("User ID:", userId);  // 打印用户ID
+      } else {
+        console.error("No ID found in the token string");
+      }
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
