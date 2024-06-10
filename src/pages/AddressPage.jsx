@@ -51,14 +51,25 @@ const AddressList = () => {
   const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
-    fetchAddresses();
+    const token = sessionStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      const match = token.match(/id=(\d+)/);
+      if (match) {
+        const userId = match[1];
+        fetchAddresses(userId);
+        console.log("User ID:", userId);  // 打印用户ID
+      } else {
+        console.error("No ID found in the token string");
+      }
+    }
   }, []);
 
-  const fetchAddresses = async () => {
+  const fetchAddresses = async (userId) => {
     try {
       const response = await axios.get('http://localhost:8081/api/address/list', {
         params: {
-          userId: 1 // 这里需要使用实际的userId
+          userId: userId // 使用从token解码得到的userId
         }
       });
       if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
@@ -76,7 +87,7 @@ const AddressList = () => {
       await axios.delete('http://localhost:8081/api/address/delete', {
         params: { id, userId }
       });
-      fetchAddresses(); // Refresh the address list
+      fetchAddresses(userId); // Refresh the address list
     } catch (error) {
       console.error('Error deleting address', error);
     }
@@ -85,7 +96,7 @@ const AddressList = () => {
   const updateAddress = async (address) => {
     try {
       await axios.put('http://localhost:8081/api/address/update', address);
-      fetchAddresses(); // Refresh the address list
+      fetchAddresses(address.userId); // Refresh the address list
     } catch (error) {
       console.error('Error updating address', error);
     }
@@ -106,9 +117,8 @@ const AddressList = () => {
               {address.isDefault === "1" ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> : <span style={{ color: 'red' }}>设为默认</span>}
             </div>
             <div>
-              <button className='btn' style={{ marginRight: '5px', }} onClick={() => updateAddress(address)}>编辑</button>
+              <button className='btn' style={{ marginRight: '10px', }} onClick={() => updateAddress(address)}>编辑</button>
               <button className='btn' style={{ marginRight: '5px', }} onClick={() => deleteAddress(address.id, address.userId)}>删除</button>
-              <button className='btn' onClick={() => console.log('复制', address.id)}>复制</button>
             </div>
           </div>
         </div>
