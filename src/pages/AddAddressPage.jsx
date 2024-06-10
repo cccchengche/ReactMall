@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from '@nutui/icons-react';
+import axios from 'axios';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Header = () => {
   );
 };
 
-const AddAddressPage = () => {
+const AddAddressPage = ({ userId }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     contact: '',
@@ -56,10 +57,23 @@ const AddAddressPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    navigate('/address-management'); // Assuming '/addresses' is your address list page
+    const dataToSubmit = {
+      ...formData,
+      isDefault: formData.isDefault ? 1 : 0, // 将 isDefault 转换为 0 或 1
+      userId // 添加 userId
+    };
+    try {
+      const response = await axios.post('http://localhost:8081/api/address/add', dataToSubmit);
+      if (response.data && response.data.code === 200) {
+        navigate('/address-management'); // Assuming '/address-management' is your address list page
+      } else {
+        console.error('Unexpected response data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error adding address', error);
+    }
   };
 
   return (
@@ -77,9 +91,24 @@ const AddAddressPage = () => {
             type="text" name="mobile" placeholder="请输入手机号" value={formData.mobile} onChange={handleInputChange} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>地址：</label>
+          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>省份：</label>
           <input style={{ padding: '10px 20px' }}
-            type="text" name="address" placeholder="省/市/区/街道" value={`${formData.province} ${formData.city} ${formData.town} ${formData.street}`} onChange={handleInputChange} />
+            type="text" name="province" placeholder="请输入省份" value={formData.province} onChange={handleInputChange} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>城市：</label>
+          <input style={{ padding: '10px 20px' }}
+            type="text" name="city" placeholder="请输入城市" value={formData.city} onChange={handleInputChange} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>区/县：</label>
+          <input style={{ padding: '10px 20px' }}
+            type="text" name="town" placeholder="请输入区/县" value={formData.town} onChange={handleInputChange} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>街道：</label>
+          <input style={{ padding: '10px 20px' }}
+            type="text" name="street" placeholder="请输入街道" value={formData.street} onChange={handleInputChange} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>备注：</label>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from '@nutui/icons-react';
 import { useNavigate } from 'react-router-dom';
-import '../css/AddressPage.css'
+import axios from 'axios';
+import '../css/AddressPage.css';
 
 const AddressPage = () => {
   return (
@@ -14,7 +15,7 @@ const AddressPage = () => {
 };
 
 const Header = () => {
-  const navigate = useNavigate();  // 初始化 navigate 函数
+  const navigate = useNavigate();
 
   return (
     <div style={{
@@ -41,52 +42,54 @@ const Header = () => {
         }}
       />
       <span>收货地址</span>
-      <div style={{ width: '24px' }}> {/* 占位元素保持对称性 */}</div>
+      <div style={{ width: '24px' }}></div>
     </div>
   );
 };
 
-
 const AddressList = () => {
-  const addresses = [
-    {
-      id: 1,
-      userId: 'user001',
-      mobile: '12345678901',
-      province: '浙江省',
-      city: '杭州市',
-      town: '西湖区',
-      street: '文三路123号',
-      contact: '小明',
-      isDefault: true,
-      note: "家庭住址"
-    },
-    {
-      id: 2,
-      userId: 'user002',
-      mobile: '23456789012',
-      province: '广东省',
-      city: '广州市',
-      town: '天河区',
-      street: '体育西路456号',
-      contact: '小红',
-      isDefault: false,
-      note: "办公地址"
-    },
-    {
-      id: 3,
-      userId: 'user003',
-      mobile: '34567890123',
-      province: '北京市',
-      city: '北京市',
-      town: '朝阳区',
-      street: '朝阳门外大街789号',
-      contact: '小李',
-      isDefault: false,
-      note: "朋友家"
-    }
-  ];
+  const [addresses, setAddresses] = useState([]);
 
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
+
+  const fetchAddresses = async () => {
+    try {
+      const response = await axios.get('http://localhost:8081/api/address/list', {
+        params: {
+          userId: 1 // 这里需要使用实际的userId
+        }
+      });
+      if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
+        setAddresses(response.data.data);
+      } else {
+        console.error('Unexpected response data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching addresses', error);
+    }
+  };
+
+  const deleteAddress = async (id, userId) => {
+    try {
+      await axios.delete('http://localhost:8081/api/address/delete', {
+        params: { id, userId }
+      });
+      fetchAddresses(); // Refresh the address list
+    } catch (error) {
+      console.error('Error deleting address', error);
+    }
+  };
+
+  const updateAddress = async (address) => {
+    try {
+      await axios.put('http://localhost:8081/api/address/update', address);
+      fetchAddresses(); // Refresh the address list
+    } catch (error) {
+      console.error('Error updating address', error);
+    }
+  };
 
   return (
     <div style={{ padding: '10px' }}>
@@ -100,11 +103,11 @@ const AddressList = () => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              {address.isDefault ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> : <span style={{ color: 'red' }}>设为默认</span>}
+              {address.isDefault === "1" ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> : <span style={{ color: 'red' }}>设为默认</span>}
             </div>
             <div>
-              <button className='btn' style={{ marginRight: '5px', }} onClick={() => console.log('修改', address.id)}>编辑</button>
-              <button className='btn' style={{ marginRight: '5px', }} onClick={() => console.log('删除', address.id)}>删除</button>
+              <button className='btn' style={{ marginRight: '5px', }} onClick={() => updateAddress(address)}>编辑</button>
+              <button className='btn' style={{ marginRight: '5px', }} onClick={() => deleteAddress(address.id, address.userId)}>删除</button>
               <button className='btn' onClick={() => console.log('复制', address.id)}>复制</button>
             </div>
           </div>
