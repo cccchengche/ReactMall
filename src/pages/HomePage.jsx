@@ -48,7 +48,7 @@ const HomePage = () => {
     <div className="home-container">
       <AppSearchBar />
       <Row className="home-content" type='flex' justify="center">
-        <Col span={24}>
+        <Col span={24} className="grid-container">
           <PullToRefresh onRefresh={handleRefresh}>
             <AppSwiper />
             {/* 添加 Grid ,此处与商品分类链接！！！ comment by ZLT */}
@@ -78,7 +78,7 @@ const HomePage = () => {
               }
               return rows;
             }, []).map((pair, idx) => (
-              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0px' }}>
+              <Row key={idx} gutter={[6, 6]} type='flex' justify="space-around" style={{ padding: '0 6px' }}>
                 {pair.map(product => (
                   <Col key={product.id} span={12}>
                     <AppHomeCard

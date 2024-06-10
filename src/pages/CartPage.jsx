@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber, Swipe, Button, Checkbox } from '@nutui/nutui-react';
+import { Card, Empty, Toast, Loading, NavBar, Cell, InputNumber, Swipe, Button, Checkbox, Tag } from '@nutui/nutui-react';
 import { Share, Cart, ArrowLeft, More, Del } from '@nutui/icons-react';
 import baseUrl from '../config/config';
+import '../css/CartPage.css';
 
 const parseTokenString = (tokenString) => {
   const tokenArray = tokenString
@@ -43,6 +44,8 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [isAllSelected, setIsAllSelected] = useState(false);  // 新增状态
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,36 +127,51 @@ const CartPage = () => {
     navigate('/createOrder', { state: { selectedItems } });
   };
 
-  const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) =>
-      prev.includes(itemId)
+  const handleSelectItem = (itemId, itemPrice) => {
+    setSelectedItems((prev) => {
+      const updatedSelectedItems = prev.includes(itemId)
         ? prev.filter((id) => id !== itemId)
-        : [...prev, itemId]
-    );
+        : [...prev, itemId];
+      const updatedTotalPrice = updatedSelectedItems.includes(itemId)
+        ? totalPrice + itemPrice
+        : totalPrice - itemPrice;
+      setTotalPrice(updatedTotalPrice);
+      return updatedSelectedItems;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+      setTotalPrice(0);
+    } else {
+      const allItemIds = cartItems.map(item => item.id);
+      const total = cartItems.reduce((sum, item) => sum + item.price * item.num, 0);
+      setSelectedItems(allItemIds);
+      setTotalPrice(total);
+    }
+    setIsAllSelected(!isAllSelected);
   };
 
   return (
     <div className="cart-page">
-      <NavBar
-        back={<ArrowLeft onClick={() => navigate(0)} />}
-        right={
-          <>
-            <span onClick={() => Toast.show('编辑')}>编辑</span>
-            <More onClick={() => Toast.show('更多')} />
-          </>
-        }
-        onBackClick={() => navigate(-1)}
-      >
-        <span onClick={() => Toast.show('购物车')}>购物车</span>
-        <i
-          style={{ marginLeft: '5px' }}
-          className="flex-center"
-          onClick={() => Toast.show('购物车')}
+      <div className="cart-head">
+        <NavBar
+          back={<ArrowLeft onClick={() => navigate(0)} />}
+          right={
+            <>
+              <span onClick={() => Toast.show('编辑')}>编辑</span>
+              <More onClick={() => Toast.show('更多')} />
+            </>
+          }
+          onBackClick={() => navigate(-1)}
         >
-          <Cart />
-        </i>
-      </NavBar>
-
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Cart style={{ marginRight: '10px', color: 'red' }} />
+            <span onClick={() => Toast.show('购物车')}>购物车</span>
+          </div>
+        </NavBar>
+      </div>
       {loading ? (
         <Loading />
       ) : errorMessage ? (
@@ -164,6 +182,7 @@ const CartPage = () => {
         <Empty description="您的购物车为空" />
       ) : (
             <>
+            <div style={{ paddingBottom: '70px' }}>
               <Cell.Group>
                 {cartItems.map((item, index) => {
                   const specs = JSON.parse(item.spec);
@@ -172,7 +191,7 @@ const CartPage = () => {
                   return (
                     <Swipe
                       key={item.id}
-                      style={{ height: '104px' }}
+                      style={{ height: '100%' }}
                       rightAction={
                         <div
                           style={{
@@ -214,8 +233,7 @@ const CartPage = () => {
                           <Checkbox
                             checked={selectedItems.includes(item.id)}
                             onChange={(e) => {
-                              // e.stopPropagation();
-                              handleSelectItem(item.id);
+                              handleSelectItem(item.id, item.price);
                             }}
                           />
                           <Card
@@ -245,8 +263,13 @@ const CartPage = () => {
                 })}
 
               </Cell.Group>
-              <div style={{ padding: '16px' }}>
-                <Button type="primary" block onClick={handleCheckout}>
+              </div>
+              <div className='sumup' style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ fontSize: '18px', color: 'red' }}>总金额: ¥{(totalPrice/100).toFixed(2)}</div>
+                <Button type="primary" style={{marginRight:'-90px'}} onClick={handleSelectAll} >
+                  {isAllSelected ? '取消全选' : '全选'}
+                </Button>
+                <Button type="primary" onClick={handleCheckout}>
                   结算
                 </Button>
               </div>
@@ -257,3 +280,5 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+
