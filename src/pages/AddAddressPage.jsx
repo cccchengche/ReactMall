@@ -130,10 +130,6 @@ const AddAddressPage = () => {
           <input style={{ padding: '10px 20px' }}
             type="text" name="note" placeholder="请输入备注" value={formData.note} onChange={handleInputChange} />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <label style={{ marginRight: '10px', minWidth: '80px', textAlign: 'right' }}>默认地址：</label>
-          <input type="checkbox" name="isDefault" checked={formData.isDefault} onChange={handleInputChange} />
-        </div>
         <button type="submit" style={{ display: 'block', width: '100%', padding: '10px 0', backgroundColor: '#ff3940', borderColor: '#ff3940', color: '#fff', borderRadius: '5px', marginTop: '20px' }}>确认</button>
       </form>
     </div>

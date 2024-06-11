@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from '@nutui/icons-react';
+import { Card, Input, Button, Dialog, SearchBar, Toast } from '@nutui/nutui-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/AddressPage.css';
@@ -49,6 +50,8 @@ const Header = () => {
 
 const AddressList = () => {
   const [addresses, setAddresses] = useState([]);
+  const [currentAddress, setCurrentAddress] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -114,8 +117,18 @@ const AddressList = () => {
     }
   };
 
+  const handleEdit = (address) => {
+    setCurrentAddress({ ...address });
+    setIsDialogOpen(true);
+  };
+
+  const handleUpdate = async () => {
+    updateAddress({ ...currentAddress });
+    setIsDialogOpen(false);
+  };
+
   return (
-    <div style={{ padding: '10px' }}>
+    <div className='addressPage' style={{ padding: '10px' }}>
       {addresses.map((address) => (
         <div key={address.id} style={{ marginBottom: '20px', padding: '10px', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
           <div style={{ marginBottom: '10px', fontSize: '16px', fontWeight: 'bold' }}>
@@ -126,18 +139,26 @@ const AddressList = () => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              {address.isDefault === "1" 
-                ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span> 
+              {address.isDefault === "1"
+                ? <span style={{ color: 'green', fontWeight: 'bold' }}>默认地址</span>
                 : <button className='btn' style={{ color: 'red' }} onClick={() => setDefault(address.userId, address.id)}>设为默认</button>
               }
             </div>
             <div>
-              <button className='btn' style={{ marginRight: '10px', }} onClick={() => updateAddress(address)}>编辑</button>
+              <button className='btn' style={{ marginRight: '10px', }} onClick={() => handleEdit(address)}>编辑</button>
               <button className='btn' style={{ marginRight: '5px', }} onClick={() => deleteAddress(address.id, address.userId)}>删除</button>
             </div>
           </div>
         </div>
       ))}
+      <Dialog visible={isDialogOpen} title="编辑地址" onConfirm={handleUpdate} onClose={() => setIsDialogOpen(false)}>
+        <input placeholder="联系人" value={currentAddress.contact || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, contact: e.target.value })} />
+        <input placeholder="手机号" value={currentAddress.mobile || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, mobile: e.target.value })} />
+        <input placeholder="省份" value={currentAddress.province || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, province: e.target.value })} />
+        <input placeholder="城市" value={currentAddress.city || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, city: e.target.value })} />
+        <input placeholder="区/县" value={currentAddress.town || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, town: e.target.value })} />
+        <input placeholder="街道" value={currentAddress.street || ''} onChange={(e) => setCurrentAddress({ ...currentAddress, street: e.target.value })} />
+      </Dialog>
     </div>
   );
 };

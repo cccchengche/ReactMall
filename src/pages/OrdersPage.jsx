@@ -106,13 +106,13 @@ const OrderList = () => {
           <div key={order.id} className="order-item">
             <div className="order-info">
               <div className="order-title">
-                订单编号: {order.id}
+                <span style={{ fontWeight: '300', fontStyle: 'italic' }}>{order.id}</span>
+                <span style={{ fontSize: '18px' }}>{order.status === 0 ? <span style={{ color: 'red' }}>未支付</span> : order.status === 1 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 2 ? '未发货' : order.status === 3 ? '已发货' : order.status === 4 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
               </div>
               <div className="order-details">
-                <p>下单时间: {formatDate(order.create_time)}</p>
-                <p>总金额: ¥{(order.total_fee / 100).toFixed(2)}</p>
+                <span style={{ fontSize: '18px', fontStyle: 'italic' }}>¥{(order.total_fee / 100).toFixed(2)}</span>
                 <p>支付方式: {order.payment_type === 1 ? '微信' : order.payment_type === 2 ? '支付宝' : order.payment_type === 3 ? '余额' : '其他'}</p>
-                <p>订单状态: {order.status === 0 ? '未支付' : order.status === 1 ? '已支付' : order.status === 2 ? '未发货' : order.status === 3 ? '已发货' : order.status === 4 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</p>
+                <p>下单时间: {formatDate(order.create_time)}</p>
               </div>
               <div>
                 <Button className='order-btn' onClick={() => handleViewOrder(orderData)}>查看详情</Button>
