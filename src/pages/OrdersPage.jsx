@@ -4,13 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, message, Modal } from 'antd';
 import '../css/OrdersPage.css';
+import { ConfigProvider, Cell, NavBar, Toast } from '@nutui/nutui-react';
+import baseUrl from '../config/config';
 
 const OrdersPage = () => {
   return (
-    <div>
-      <Header />
-      <OrderList />
-    </div>
+    <ConfigProvider>
+      <div className="orders-page" style={{ paddingBottom: '60px' }}>
+        <Header />
+        <OrderList />
+      </div>
+    </ConfigProvider>
   );
 };
 
@@ -18,14 +22,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="header">
-      <ArrowLeft
-        className='icon'
-        onClick={() => navigate(-1)}
-      />
-      <span>订单列表</span>
-      <div className="header-placeholder"></div>
-    </div>
+    <NavBar
+      back={<ArrowLeft onClick={() => window.history.back()} />}
+      onBackClick={() => window.history.back()}
+    >
+      订单列表
+    </NavBar>
   );
 };
 
@@ -36,24 +38,41 @@ const OrderList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const match = token.match(/id=(\d+)/);
-      if (match) {
-        const userId = match[1];
-        fetchOrders(userId);
-      } else {
-        console.error("No ID found in the token string");
+    const tokenString = sessionStorage.getItem('token');
+    let tokenObject;
+    if (tokenString) {
+      try {
+        tokenObject = parseTokenString(tokenString);
+      } catch (e) {
+        console.error("Failed to parse token from sessionStorage", e);
       }
+    }
+
+    if (tokenObject) {
+      const userId = tokenObject.id;
+      fetchOrders(userId);
     }
   }, []);
 
+  const parseTokenString = (tokenString) => {
+    const tokenArray = tokenString
+      .slice(5, -1)
+      .split(", ")
+      .map(pair => pair.split("="));
+
+    const tokenObject = {};
+    tokenArray.forEach(([key, value]) => {
+      tokenObject[key] = value;
+    });
+
+    return tokenObject;
+  };
+
   const fetchOrders = async (userId) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/order/user/ordersWithDetails', {
+      const response = await axios.get(`${baseUrl}/api/order/user/ordersWithDetails`, {
         params: { userId }
       });
-      console.log(response.data);
       if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
         // 对订单进行倒序排序
         const sortedOrders = response.data.data.sort((a, b) => new Date(b.order.create_time) - new Date(a.order.create_time));
@@ -63,17 +82,17 @@ const OrderList = () => {
       }
     } catch (error) {
       console.error('Error fetching orders', error);
+      Toast.show('获取订单信息失败');
     }
   };
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/order/cancel', {
+      const response = await axios.get(`${baseUrl}/api/order/cancel`, {
         params: { id: orderId }
       });
       if (response.data && response.data.code === 200) {
         message.success('订单已取消');
-        // 更新订单状态为已取消
         setOrders(prevOrders => prevOrders.map(order =>
           order.order.id === orderId ? { ...order, order: { ...order.order, status: 5 } } : order
         ));
@@ -107,26 +126,35 @@ const OrderList = () => {
         const order = orderData.order;
         const orderDetails = orderData.orderDetails;
         return (
-          <div key={order.id} className="order-item">
+          <Cell key={order.id} title={`订单号: ${order.id}`}>
             <div className="order-info">
               <div className="order-title">
-                <span style={{ fontWeight: '300', fontStyle: 'italic' }}>{order.id}</span>
-                <span style={{ fontSize: '18px' }}>{(order.status === 0 || order.status === 1) ? <span onClick={() => navigate(`/pay/${order.id}`)} style={{ color: 'red' }}>未支付</span> : order.status === 2 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 3 ? '未发货' : order.status === 4 ? '已发货' : order.status === 6 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
+                <span>{order.id}</span>
+                <span style={{ fontSize: '18px' }}>
+                  {(order.status === 0 || order.status === 1) ? 
+                    <span onClick={() => navigate(`/pay/${order.id}`)} style={{ color: 'red' }}>未支付</span> :
+                    order.status === 2 ? <span style={{ color: 'green' }}>已支付</span> :
+                    order.status === 3 ? '未发货' :
+                    order.status === 4 ? '已发货' :
+                    order.status === 6 ? '已完成' :
+                    order.status === 5 ? '已取消' : '未知状态'}
+                </span>
               </div>
               <div className="order-details">
                 <div>
-                  <p style={{ fontSize: '18px', fontStyle: 'italic' }}>¥{(order.total_fee / 100).toFixed(2)}</p>
+                  <p>¥{(order.total_fee / 100).toFixed(2)}</p>
                   <p>支付方式: {order.payment_type === 1 ? '微信' : order.payment_type === 2 ? '支付宝' : order.payment_type === 3 ? '余额' : '其他'}</p>
                   <p>下单时间: {formatDate(order.create_time)}</p>
                   <div>
-                    <Button className='order-btn' onClick={() => handleViewOrder(orderData)}>查看详情</Button>
-                    {(order.status === 0 || order.status === 1 || order.status === 2) && <Button className='order-btn' onClick={() => handleCancelOrder(order.id)}>取消订单</Button>}
+                    <Button onClick={() => handleViewOrder(orderData)}>查看详情</Button>
+                    {(order.status === 0 || order.status === 1 || order.status === 2) && 
+                      <Button onClick={() => handleCancelOrder(order.id)}>取消订单</Button>}
                   </div>
                 </div>
-                <img style={{ width: '100px', }} src={orderDetails[0].image} alt="" />
+                <img style={{ width: '100px' }} src={orderDetails[0].image} alt="" />
               </div>
             </div>
-          </div>
+          </Cell>
         );
       })}
 
