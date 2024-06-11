@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Cell, CellGroup, Image as NutImage, Card as NutCard, } from '@nutui/nutui-react';
-import { Search, ArrowLeft } from '@nutui/icons-react'
+import { Cell, CellGroup, NavBar } from '@nutui/nutui-react';
+import { Search, Apps } from '@nutui/icons-react';
 import '../css/CategoryPage.css';
 
 const categories = [
@@ -34,46 +34,62 @@ const products = {
 
 const CategoryPage = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0].id);
-  const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const navigate = useNavigate();
 
   const handleCategoryClick = (name) => {
-    setSelectedCategoryName(name);
     navigate(`/categoryDetail/${encodeURIComponent(name)}`);
   };
 
   return (
-    <div>
-      <div className="header">
-        <ArrowLeft className='icon' width="20px" height="20px" onClick={() => navigate(-1)} />
-        <span>分类</span>
-        <Search className='icon' width="20px" height="20px" onClick={() => navigate('/search')} />
+    <div className='cmain'>
+      <div className='navbar'>
+      <NavBar
+          children={
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' ,fontSize:'19px'}}>
+              <Apps style={{ marginLeft: '10px', color: 'red' }} />
+              分类
+            </div>
+          }
+          leftShow
+          left={<Search className='icon' width="20px" height="20px" onClick={() => navigate('/search')} />}
+          fixed
+          style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#fff' }}
+        />
+        <hr style={{ marginTop: -20, border: 'none', borderBottom: '1px solid #e0e0e0' }} />
       </div>
-      <div style={{ display: 'flex', marginTop: '15%' }}>
-        <div style={{ width: '30%' }}>
+
+      <div className='catemain'>
+        <div className='cellitem' style={{ width: '30%' }}>
           <CellGroup>
             {categories.map(category => (
-              <Cell key={category.id} title={category.name}
+              <Cell
+                key={category.id}
+                title={category.name}
                 onClick={() => setSelectedCategoryId(category.id)}
-                className={`categoryItem ${selectedCategoryId === category.id ? 'active' : ''}`}  // 使用模板字符串正确应用类名
-                style={{ cursor: 'pointer' }} />
+                className={`categoryItem ${selectedCategoryId === category.id ? 'active' : ''}`} 
+                style={{
+                  cursor: 'pointer',
+                  background: selectedCategoryId === category.id 
+                    ? 'linear-gradient(to right, red, darkred)' 
+                    : 'initial'
+                }}
+              />
             ))}
           </CellGroup>
         </div>
-        <div style={{ width: '70%', padding: '10px', display: 'flex', flexWrap: 'wrap', }}>
+        <div style={{ width: '1px', backgroundColor: '#e0e0e0', height: '100%', marginRight: '10px' }}></div>
+        <div className='Catecard' style={{ width: '69%', padding: '10px', display: 'flex', flexWrap: 'wrap' }}>
           {products[selectedCategoryId].map(product => (
-            <div style={{ width: '50%', textAlign: 'center', marginBottom: '20px' }}>
-              <img src={product.image} alt={product.name} style={{ cursor: 'pointer', width: '90%', }}
+            <div key={product.id} style={{ width: '50%', textAlign: 'center', marginBottom: '20px' }}>
+              <img src={product.image} alt={product.name} style={{ cursor: 'pointer', width: '90%' }}
                 onClick={() => handleCategoryClick(product.name)} />
               <p>{product.name}</p>
             </div>
-
           ))}
         </div>
       </div>
     </div>
-
   );
-}
+};
 
 export default CategoryPage;
