@@ -33,7 +33,8 @@ const MyPage = () => {
           console.error('Username not found in token');
         }
         if (matchBalance) {
-          setBalance(matchBalance[1] === 'null' ? '0.00' : matchBalance[1]);
+          // 将余额从分转换为元，并设置两位小数
+          setBalance((Number(matchBalance[1]) / 100).toFixed(2));
         } else {
           console.error('Balance not found in token');
         }

@@ -127,14 +127,14 @@ const CartPage = () => {
     navigate('/createOrder', { state: { selectedItems } });
   };
 
-  const handleSelectItem = (itemId, itemPrice) => {
+  const handleSelectItem = (itemId, itemPrice,itemNum) => {
     setSelectedItems((prev) => {
       const updatedSelectedItems = prev.includes(itemId)
         ? prev.filter((id) => id !== itemId)
         : [...prev, itemId];
       const updatedTotalPrice = updatedSelectedItems.includes(itemId)
-        ? totalPrice + itemPrice
-        : totalPrice - itemPrice;
+        ? totalPrice + itemPrice*itemNum
+        : totalPrice - itemPrice*itemNum;
       setTotalPrice(updatedTotalPrice);
       return updatedSelectedItems;
     });
@@ -146,7 +146,7 @@ const CartPage = () => {
       setTotalPrice(0);
     } else {
       const allItemIds = cartItems.map(item => item.id);
-      const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+      const total = cartItems.reduce((sum, item) => sum + item.price*item.num, 0);
       setSelectedItems(allItemIds);
       setTotalPrice(total);
     }
@@ -233,7 +233,7 @@ const CartPage = () => {
                           <Checkbox
                             checked={selectedItems.includes(item.id)}
                             onChange={(e) => {
-                              handleSelectItem(item.id, item.price);
+                              handleSelectItem(item.id, item.price, item.num);
                             }}
                           />
                           <Card

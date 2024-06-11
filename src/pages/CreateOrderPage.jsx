@@ -147,7 +147,7 @@ const CreateOrder = () => {
 
         <div className="order-footer" style={footerStyle}>
           <div style={{ flex: 1, paddingLeft: '16px' }}>
-            订单合计:<Price price={(products.reduce((total, product) => total + (product.price), 0) / 100).toFixed(2)} size="normal" thousands />
+            订单合计:<Price price={(products.reduce((total, product) => total + (product.price* product.num), 0) / 100).toFixed(2)} size="normal" thousands />
               {/*  去掉了* product.num，否则计算多件商品结算价格的时候会重复 */}
           </div>
           <Button type="primary" onClick={handleSubmitOrder} style={{ flex: 'none', margin: '0 16px', width: 'auto' }}>
