@@ -55,8 +55,19 @@ const OrderList = () => {
       });
       console.log(response.data);
       if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
+        // 去重
+        const uniqueOrders = [];
+        const orderIds = new Set();
+
+        response.data.data.forEach(orderData => {
+          if (!orderIds.has(orderData.order.id)) {
+            uniqueOrders.push(orderData);
+            orderIds.add(orderData.order.id);
+          }
+        });
+
         // 对订单进行倒序排序
-        const sortedOrders = response.data.data.sort((a, b) => new Date(b.order.create_time) - new Date(a.order.create_time));
+        const sortedOrders = uniqueOrders.sort((a, b) => new Date(b.order.create_time) - new Date(a.order.create_time));
         setOrders(sortedOrders);
       } else {
         console.error('Unexpected response data:', response.data);
