@@ -1,0 +1,60 @@
+.categoryItem {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.categoryItem:hover {
+  background-color: #f0f0f0;
+}
+
+.categoryItem.active {
+  background-color: #0000ff;
+  color: #e0e0e0;
+}
+
+.categoryHeader {
+  padding: 20px 5px 10px;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  top: 0;
+
+  z-index: 1000; /* 确保header在其他内容上层 */
+
+}
+
+.categoryHeader span {
+  flex: 3;
+  font-size: 18px;
+  text-align: center;
+}
+
+.icon {
+  flex: 1;
+  cursor: pointer;
+}
+
+.Catecard{
+  margin-top: 1px;
+}
+
+.catemain{
+  margin-top: 15%;
+  display: flex;
+
+}
+.cmain{
+  /* 分类导航栏以及整体页面 */
+  margin-top: 0px;
+  
+}
+
+/* CategoryPage.css */
+.cellitem .categoryItem {
+  font-size: 17px; /* 左侧边栏文字字体变大 */
+}
+
+.Catecard p {
+  font-size: 16px; /* 右侧卡片文字字体变小 */
+}

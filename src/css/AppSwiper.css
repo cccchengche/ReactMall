@@ -1,0 +1,11 @@
+.responsive-image-container {
+    width: 100%; /* 设置轮播容器的宽度为100%，使其与父容器等宽 */
+    height: 200px; /* 设置轮播容器的高度，根据需要进行调整 */
+  }
+  
+  .responsive-image {
+    width: 100%; /* 设置图片宽度为100%，使其填充轮播容器 */
+    height: 100%; /* 设置图片高度为100%，使其填充轮播容器 */
+    object-fit: cover; /* 使用 cover 值，保持图片比例不变且填充整个容器 */
+  }
+  
