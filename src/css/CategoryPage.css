@@ -19,10 +19,9 @@
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: white;
-  /* 确保背景色一致 */
-  z-index: 1000;
-  /* 确保header在其他内容上层 */
+
+  z-index: 1000; /* 确保header在其他内容上层 */
+
 }
 
 .categoryHeader span {
@@ -34,4 +33,28 @@
 .icon {
   flex: 1;
   cursor: pointer;
+}
+
+.Catecard{
+  margin-top: 1px;
+}
+
+.catemain{
+  margin-top: 15%;
+  display: flex;
+
+}
+.cmain{
+  /* 分类导航栏以及整体页面 */
+  margin-top: 0px;
+  
+}
+
+/* CategoryPage.css */
+.cellitem .categoryItem {
+  font-size: 17px; /* 左侧边栏文字字体变大 */
+}
+
+.Catecard p {
+  font-size: 16px; /* 右侧卡片文字字体变小 */
 }
