@@ -102,21 +102,25 @@ const OrderList = () => {
     <div className="order-list">
       {orders.map((orderData) => {
         const order = orderData.order;
+        const orderDetails = orderData.orderDetails;
         return (
           <div key={order.id} className="order-item">
             <div className="order-info">
               <div className="order-title">
                 <span style={{ fontWeight: '300', fontStyle: 'italic' }}>{order.id}</span>
-                <span style={{ fontSize: '18px' }}>{order.status === 0 ? <span style={{ color: 'red' }}>未支付</span> : order.status === 1 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 2 ? '未发货' : order.status === 3 ? '已发货' : order.status === 4 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
+                <span style={{ fontSize: '18px' }}>{(order.status === 0 || order.status === 1) ? <span style={{ color: 'red' }}>未支付</span> : order.status === 2 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 3 ? '未发货' : order.status === 4 ? '已发货' : order.status === 6 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
               </div>
               <div className="order-details">
-                <span style={{ fontSize: '18px', fontStyle: 'italic' }}>¥{(order.total_fee / 100).toFixed(2)}</span>
-                <p>支付方式: {order.payment_type === 1 ? '微信' : order.payment_type === 2 ? '支付宝' : order.payment_type === 3 ? '余额' : '其他'}</p>
-                <p>下单时间: {formatDate(order.create_time)}</p>
-              </div>
-              <div>
-                <Button className='order-btn' onClick={() => handleViewOrder(orderData)}>查看详情</Button>
-                {(order.status === 0 || order.status === 1 || order.status === 2) && <Button className='order-btn' onClick={() => handleCancelOrder(order.id)}>取消订单</Button>}
+                <div>
+                  <p style={{ fontSize: '18px', fontStyle: 'italic' }}>¥{(order.total_fee / 100).toFixed(2)}</p>
+                  <p>支付方式: {order.payment_type === 1 ? '微信' : order.payment_type === 2 ? '支付宝' : order.payment_type === 3 ? '余额' : '其他'}</p>
+                  <p>下单时间: {formatDate(order.create_time)}</p>
+                  <div>
+                    <Button className='order-btn' onClick={() => handleViewOrder(orderData)}>查看详情</Button>
+                    {(order.status === 0 || order.status === 1 || order.status === 2) && <Button className='order-btn' onClick={() => handleCancelOrder(order.id)}>取消订单</Button>}
+                  </div>
+                </div>
+                <img style={{ width: '100px', }} src={orderDetails[0].image} alt="" />
               </div>
             </div>
           </div>

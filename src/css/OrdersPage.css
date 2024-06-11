@@ -46,6 +46,11 @@
   justify-content: space-between;
 }
 
+.order-details {
+  display: flex;
+  justify-content: space-between;
+}
+
 .order-details p {
   margin: 5px 0;
 }
