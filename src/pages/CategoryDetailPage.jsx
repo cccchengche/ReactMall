@@ -37,7 +37,7 @@ const CategoryDetailPage = () => {
 
   return (
     <div>
-      <div className="header">
+      <div className="categoryHeader">
         <ArrowLeft className='icon' width="20px" height="20px" onClick={() => navigate(-1)} />
         <span>{name}</span>
         <Search className='icon' width="20px" height="20px" onClick={() => navigate('/search')} />
