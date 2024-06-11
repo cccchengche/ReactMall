@@ -108,7 +108,7 @@ const OrderList = () => {
             <div className="order-info">
               <div className="order-title">
                 <span style={{ fontWeight: '300', fontStyle: 'italic' }}>{order.id}</span>
-                <span style={{ fontSize: '18px' }}>{(order.status === 0 || order.status === 1) ? <span style={{ color: 'red' }}>未支付</span> : order.status === 2 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 3 ? '未发货' : order.status === 4 ? '已发货' : order.status === 6 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
+                <span style={{ fontSize: '18px' }}>{(order.status === 0 || order.status === 1) ? <span onClick={() => navigate(`/pay/${order.id}`)} style={{ color: 'red' }}>未支付</span> : order.status === 2 ? <span style={{ color: 'green' }}>已支付</span> : order.status === 3 ? '未发货' : order.status === 4 ? '已发货' : order.status === 6 ? '已完成' : order.status === 5 ? '已取消' : '未知状态'}</span>
               </div>
               <div className="order-details">
                 <div>
