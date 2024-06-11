@@ -13,16 +13,18 @@
   color: #e0e0e0;
 }
 
-.header {
+.categoryHeader {
   padding: 20px 5px 10px;
   display: flex;
   position: fixed;
   width: 100%;
   top: 0;
+
   z-index: 1000; /* 确保header在其他内容上层 */
+
 }
 
-.header span {
+.categoryHeader span {
   flex: 3;
   font-size: 18px;
   text-align: center;
