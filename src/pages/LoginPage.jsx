@@ -3,7 +3,7 @@ import axios from 'axios';
 import "../css/login.css";
 import baseUrl from "../config/config"
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import background from '../assets/OIP-C.jpg';
+import background from '../assets/logo.png';
 
 function LoginPage() {
   const [phone, setPhone] = useState('');
