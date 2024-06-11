@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, message, Modal } from 'antd';
 import '../css/OrdersPage.css';
-import baseUrl from '../config/config';
 
 const OrdersPage = () => {
   return (
@@ -51,13 +50,24 @@ const OrderList = () => {
 
   const fetchOrders = async (userId) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/order/user/ordersWithDetails`, {
+      const response = await axios.get('http://localhost:8081/api/order/user/ordersWithDetails', {
         params: { userId }
       });
       console.log(response.data);
       if (response.data && response.data.code === 200 && Array.isArray(response.data.data)) {
+        // 去重
+        const uniqueOrders = [];
+        const orderIds = new Set();
+
+        response.data.data.forEach(orderData => {
+          if (!orderIds.has(orderData.order.id)) {
+            uniqueOrders.push(orderData);
+            orderIds.add(orderData.order.id);
+          }
+        });
+
         // 对订单进行倒序排序
-        const sortedOrders = response.data.data.sort((a, b) => new Date(b.order.create_time) - new Date(a.order.create_time));
+        const sortedOrders = uniqueOrders.sort((a, b) => new Date(b.order.create_time) - new Date(a.order.create_time));
         setOrders(sortedOrders);
       } else {
         console.error('Unexpected response data:', response.data);
@@ -69,7 +79,7 @@ const OrderList = () => {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/order/cancel`, {
+      const response = await axios.get('http://localhost:8081/api/order/cancel', {
         params: { id: orderId }
       });
       if (response.data && response.data.code === 200) {
