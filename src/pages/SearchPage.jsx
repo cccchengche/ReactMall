@@ -89,7 +89,7 @@ const SearchPage = () => {
             src={product.image}
             style={{ marginTop: '20px' }}
             title={product.name}
-            price={product.price/100}
+            price={product.price / 100}
             shopName={`库存：${product.stock}`}
             tag={<div>{`品牌：${product.brand}`}</div>}
           >
@@ -127,7 +127,6 @@ const SearchPage = () => {
             onChange={(e) => setBrand(e)}
           />
         </div>
-        <Button type="primary" onClick={closeDialog}>确定</Button>
       </Dialog>
     </div>
   );
